@@ -1,0 +1,34 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="pleiades.workspace"
+  >
+
+  <include package="plone.app.contentmenu" />
+
+  <browser:resource
+    name="pleiades-workspace.css"
+    file="workspace.css"
+    />
+
+  <browser:resource
+    name="workspace_icon.gif"
+    image="workspace_icon.gif"
+    />
+        
+  <browser:page
+    for="..interfaces.IWorkspace"
+    name="view"
+    class=".workspace.WorkspaceView"
+    permission="zope2.View"
+    />
+        
+  <browser:menuItem
+    for="..interfaces.IWorkspace"
+    menu="plone_displayviews"
+    title="Workspace view"
+    action="@@view"
+    description="Default representation of a workspace"
+    />
+        
+</configure>
