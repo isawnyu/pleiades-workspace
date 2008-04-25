@@ -50,7 +50,3 @@ def initialize(context):
             extra_constructors = (constructor,),
             ).initialize(context)
 
-def createWorkspace(self, id, **kwargs):
-    import pdb; pdb.set_trace()
-    return id
-

@@ -14,5 +14,5 @@ PROJECTNAME = "pleiades.workspace"
 # easier to find permissions in the Security tab in the ZMI.
 
 ADD_PERMISSIONS = {
-    "Pleiades Workspace" : "Pleiades: Add Workspace",
+    "Workspace" : "Pleiades: Add Workspace",
 }

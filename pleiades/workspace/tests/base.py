@@ -6,8 +6,11 @@ from Testing import ZopeTestCase as ztc
 from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
 
+ztc.installProduct('ATVocabularyManager')
+ztc.installProduct('PleiadesEntity')
+
 @onsetup
-def setup_optilux_cinemacontent():
+def setup_pleiades_workspace():
     """Set up the additional products required for the Optilux Cinema Content.
     
     The @onsetup decorator causes the execution of this body to be deferred
@@ -18,27 +21,27 @@ def setup_optilux_cinemacontent():
     # This includes the other products below as well.
     
     fiveconfigure.debug_mode = True
-    import optilux.cinemacontent
-    zcml.load_config('configure.zcml', optilux.cinemacontent)
+    import pleiades.workspace
+    zcml.load_config('configure.zcml', pleiades.workspace)
     fiveconfigure.debug_mode = False
     
     # We need to tell the testing framework that these products
     # should be available. This can't happen until after we have loaded
     # the ZCML.
     
-    ztc.installPackage('optilux.cinemacontent')
+    ztc.installPackage('pleiades.workspace')
     
 # The order here is important: We first call the (deferred) function which
 # installs the products we need for the Optilux package. Then, we let 
 # PloneTestCase set up this product on installation.
 
-setup_optilux_cinemacontent()
-ptc.setupPloneSite(products=['optilux.cinemacontent'])
+setup_pleiades_workspace()
+ptc.setupPloneSite(products=['ATVocabularyManager', 'PleiadesEntity', 'pleiades.workspace'])
 
-class CinemaContentTestCase(ptc.PloneTestCase):
+class WorkspaceTestCase(ptc.PloneTestCase):
     """Base class used for test cases
     """
         
-class CinemaContentFunctionalTestCase(ptc.FunctionalTestCase):
+class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
     """Test case class used for functional (doc-)tests
     """

@@ -31,7 +31,7 @@
    -->
   <property name="content_meta_type">Workspace</property>
   <property name="product">pleiades.workspace</property>
-  <property name="factory">createWorkspace</property>
+  <property name="factory">addWorkspace</property>
  
  <!-- The immediate_view is supposed to be the view that is shown immediately
       after an object is created. Plone currently doesn't use this, however.

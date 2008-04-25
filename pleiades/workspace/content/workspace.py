@@ -25,17 +25,16 @@ from Products.Archetypes.interfaces import IObjectInitializedEvent
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
-from optilux.cinemacontent.interfaces import ICinemaFolder
+from pleiades.workspace.interfaces import IWorkspace
+from pleiades.workspace.config import PROJECTNAME
+from pleiades.workspace import WorkspaceMessageFactory as _
 
-from optilux.cinemacontent.config import PROJECTNAME
-from optilux.cinemacontent.config import PROMOTIONS_PORTLET_COLUMN
-
-from optilux.cinemacontent import CinemaMessageFactory as _
-from optilux.cinemacontent.portlets import promotions
+from Products.PleiadesEntity.content.PlaceContainer import PlaceContainer
+from Products.PleiadesEntity.content.LocationContainer import LocationContainer
 
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.
-CinemaFolderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
+WorkspaceSchema = folder.ATFolderSchema.copy() + atapi.Schema((
     atapi.TextField('text',
         required=False,
         searchable=True,
@@ -54,24 +53,24 @@ CinemaFolderSchema = folder.ATFolderSchema.copy() + atapi.Schema((
 # with the attribute with the same name that is being managed by the default
 # attributestorage
 
-CinemaFolderSchema['title'].storage = atapi.AnnotationStorage()
-CinemaFolderSchema['description'].storage = atapi.AnnotationStorage()
+WorkspaceSchema['title'].storage = atapi.AnnotationStorage()
+WorkspaceSchema['description'].storage = atapi.AnnotationStorage()
     
 # Calling this re-orders a few fields to comply with Plone conventions.
-finalizeATCTSchema(CinemaFolderSchema, folderish=True, moveDiscussion=False)
+finalizeATCTSchema(WorkspaceSchema, folderish=True, moveDiscussion=False)
 
-class CinemaFolder(folder.ATFolder):
+class Workspace(folder.ATFolder):
     """Contains multiple cinemas
     
     Can also contain promotions, which will then apply to all cinemas in
     this folder, and other cinema folders to allow cinemas to be grouped
     into sub-groups.
     """
-    implements(ICinemaFolder)
+    implements(IWorkspace)
     
     # The portal type name must be set here, matching the one in types.xml
     # in the GenericSetup profile
-    portal_type = "Cinema Folder"
+    portal_type = "Workspace"
     
     # This enables Archetypes' standard title-to-id renaming machinery
     # If you need different semantics, it's possible to override the method
@@ -79,7 +78,7 @@ class CinemaFolder(folder.ATFolder):
     _at_rename_after_creation = True
     
     # We then associate the schema with our content type
-    schema = CinemaFolderSchema
+    schema = WorkspaceSchema
     
     # Our interface specifies that we should use simple Python properties
     # for various fields. To simplify creating these, we can map them to 
@@ -93,32 +92,12 @@ class CinemaFolder(folder.ATFolder):
     title = atapi.ATFieldProperty('title')
     description = atapi.ATFieldProperty('description')
     text = atapi.ATFieldProperty('text')
-    
-# This line tells Archetypes about the content type
-atapi.registerType(CinemaFolder, PROJECTNAME)
 
-# We will register this function as an event handler, adding a "promotions"
-# portlet whenever a cinema folder is first created. 
-@adapter(ICinemaFolder, IObjectInitializedEvent)
-def add_promotions_portlet(obj, event):
-    
-    # Only do this if the parent is not a cinema folder, i.e. only do it on
-    # top-level cinema folders. Of course, site managers can move things 
-    # around once the site structure is created
-    
-    parent = aq_parent(aq_inner(obj))
-    if ICinemaFolder.providedBy(parent):
-        return
-    
-    # A portlet manager is akin to a column
-    column = getUtility(IPortletManager, name=PROMOTIONS_PORTLET_COLUMN)
-    
-    # We multi-adapt the object and the column to an assignment mapping,
-    # which acts like a dict where we can put portlet assignments
-    manager = getMultiAdapter((obj, column,), IPortletAssignmentMapping)
-    
-    # We then create the assignment and put it in the assignment manager,
-    # using the default name-chooser to pick a suitable name for us.
-    assignment = promotions.Assignment()
-    chooser = INameChooser(manager)
-    manager[chooser.chooseName(None, assignment)] = assignment
+    def initializeArchetype(self, **kwargs):
+        self['places'] = PlaceContainer('places')
+        self['locations'] = LocationContainer('locations')
+        self['names'] = folder.ATFolder('names')
+
+# This line tells Archetypes about the content type
+atapi.registerType(Workspace, PROJECTNAME)
+

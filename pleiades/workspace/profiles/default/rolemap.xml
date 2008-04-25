@@ -9,7 +9,7 @@
          can add them.
       -->
     <permission
-      name="Optilux: Add Workspace"
+      name="Pleiades: Add Workspace"
       acquire="False"
       >
         <role name="Contributor"/>
