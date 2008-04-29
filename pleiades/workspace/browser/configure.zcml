@@ -30,5 +30,19 @@
     action="@@view"
     description="Default representation of a workspace"
     />
-        
+
+  <browser:page
+    for="..interfaces.IWorkspace"
+    name="import-kml-form"
+    class=".kml.KMLImportForm"
+    permission="cmf.AddPortalContent"
+    />
+
+  <browser:page
+    for="..interfaces.IWorkspace"
+    name="import-kml"
+    class=".kml.KMLImporter"
+    permission="cmf.AddPortalContent"
+    />
+
 </configure>
