@@ -64,4 +64,5 @@ Verify import
     True
     >>> 'ptolemais-barkes-limen' in ws['names']
     True
-
+    >>> len(ws['locations'])
+    11

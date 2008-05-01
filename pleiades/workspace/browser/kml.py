@@ -4,7 +4,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from elementtree import ElementTree as etree
-
+import keytree
 
 class KMLImporter(BrowserView):
     
@@ -25,9 +25,17 @@ class KMLImporter(BrowserView):
 
         try:
             k = etree.fromstring(request.file.read())
-            for p in k.findall('*/{http://earth.google.com/kml/2.1}Placemark'):
-                n = p.find('{http://earth.google.com/kml/2.1}name')
-                name = n.text
+            kmlns = k.tag.split('}')[0][1:]
+            for pm_element in k.findall('*/{%s}Placemark' % kmlns):
+                f = keytree.feature(pm_element)
+                name = f.properties['name']
+                description = f.properties['description']
+                where = f.geometry
+                lid = locations.invokeFactory(
+                        'Location',
+                        geometryType=where.type,
+                        spatialCoordinates='%f %f' % (where.coordinates[1], where.coordinates[0])
+                        )
                 nid = names.invokeFactory(
                         'Name',
                         id=ptool.normalizeString(name),
@@ -45,6 +53,7 @@ class KMLImporter(BrowserView):
                         )
                 a = place[aid]
                 a.addReference(names[nid], 'hasName')
+                a.addReference(locations[lid], 'hasLocation')
         except:
             savepoint.rollback()
             raise
