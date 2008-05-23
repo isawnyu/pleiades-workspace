@@ -18,6 +18,11 @@ def test_suite():
             package='pleiades.workspace.tests',
             test_class=base.WorkspaceFunctionalTestCase,
             optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
+        ztc.ZopeDocFileSuite(
+            'xml-import.txt',
+            package='pleiades.workspace.tests',
+            test_class=base.WorkspaceFunctionalTestCase,
+            optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
         ])
 
 if __name__ == '__main__':

@@ -35,13 +35,27 @@
     for="..interfaces.IWorkspace"
     name="import-kml-form"
     class=".kml.KMLImportForm"
-    permission="cmf.AddPortalContent"
+    permission="zope2.View"
     />
 
   <browser:page
     for="..interfaces.IWorkspace"
     name="import-kml"
     class=".kml.KMLImporter"
+    permission="cmf.AddPortalContent"
+    />
+
+  <browser:page
+    for="..interfaces.IWorkspace"
+    name="import-xml-form"
+    class=".xml.XMLImportForm"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="..interfaces.IWorkspace"
+    name="import-xml"
+    class=".xml.XMLImporter"
     permission="cmf.AddPortalContent"
     />
 

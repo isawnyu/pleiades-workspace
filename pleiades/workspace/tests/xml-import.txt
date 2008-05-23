@@ -1,0 +1,67 @@
+KML File upload and import
+==========================
+
+Setup workspace
+---------------
+
+    >>> self.setRoles(('Manager', 'Contributor'))
+    >>> folder = self.folder
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> types = getToolByName(self.portal, 'portal_types')
+    >>> 'Workspace' in types.objectIds()
+    True
+    >>> wsid = folder.invokeFactory('Workspace', id='test-ws', title='Testing')
+    >>> ws = folder[wsid]
+    >>> 'places' in ws.objectIds()
+    True
+    >>> 'locations' in ws.objectIds()
+    True
+    >>> 'names' in ws.objectIds()
+    True
+    >>> ws_url = ws.absolute_url()
+
+Config the test browser
+-----------------------
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> portal_url = self.portal.absolute_url()
+
+    >>> browser.handleErrors = False
+    >>> self.portal.error_log._ignored_exceptions = ()
+    >>> from zope.component import getUtility, getMultiAdapter
+    >>> from plone.portlets.interfaces import IPortletManager
+    >>> from plone.portlets.interfaces import IPortletAssignmentMapping
+    >>> left_column = getUtility(IPortletManager, name=u"plone.leftcolumn")
+    >>> left_assignable = getMultiAdapter((self.portal, left_column), IPortletAssignmentMapping)
+    >>> for name in left_assignable.keys():
+    ...     del left_assignable[name]
+
+    >>> right_column = getUtility(IPortletManager, name=u"plone.rightcolumn")
+    >>> right_assignable = getMultiAdapter((self.portal, right_column), IPortletAssignmentMapping)
+    >>> for name in right_assignable.keys():
+    ...     del right_assignable[name]
+
+    >>> from Products.PloneTestCase.setup import portal_owner, default_password
+    >>> browser.open(portal_url + '/login_form?came_from=' + portal_url)
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+
+Upload
+------
+
+    >>> browser.open('%s/import-xml-form' % ws_url)
+    >>> import os
+    >>> path = '%s/src/pleiades.workspace/pleiades/workspace/tests/ba065' % os.getcwd()
+    >>> browser.getControl(name='sourcedir').value = path
+    >>> browser.getControl(name='submit').click()
+
+Verify import
+
+    >>> len(ws['locations'])
+    264
+    >>> len(ws['places'])
+    315
+    >>> 'aloanda' in ws['names']
+    True
