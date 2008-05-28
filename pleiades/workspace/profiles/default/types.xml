@@ -11,5 +11,10 @@
     name="Workspace"
     meta_type="Factory-based Type Information with dynamic views"
     />
+
+  <object
+    name="Workspace Folder"
+    meta_type="Factory-based Type Information with dynamic views"
+    />
     
 </object>

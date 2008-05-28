@@ -22,3 +22,19 @@ class IWorkspace(Interface):
                 description=_(u"A short summary of this folder")
                 )
 
+
+class IWorkspaceFolder(Interface):
+    """A container
+    """
+    contains('pleiades.workspace.interfaces.IWorkspace',
+             'Products.ATContentTypes.interfaces.IATDocument'
+             )
+    
+    title = schema.TextLine(
+                title=_(u"Title"),
+                required=True
+                )
+    description = schema.TextLine(
+                title=_(u"Description"),
+                description=_(u"A short summary of this folder")
+                )

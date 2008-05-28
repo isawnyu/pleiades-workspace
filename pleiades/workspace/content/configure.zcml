@@ -14,5 +14,16 @@
       set_schema="..interfaces.IWorkspace"
       />
   </class>
-    
+
+  <class class=".folder.WorkspaceFolder">
+    <require
+      permission="zope2.View"
+      interface="..interfaces.IWorkspaceFolder"
+      />
+    <require
+      permission="cmf.ModifyPortalContent"
+      set_schema="..interfaces.IWorkspaceFolder"
+      />
+  </class>
+
 </configure>

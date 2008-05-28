@@ -6,12 +6,16 @@ Setup
     >>> self.setRoles(('Manager', 'Contributor'))
     >>> folder = self.folder
 
-Make a workspace
+Make a workspace folder and workspace
 
     >>> from Products.CMFCore.utils import getToolByName
     >>> types = getToolByName(self.portal, 'portal_types')
+    >>> 'Workspace Folder' in types.objectIds()
+    True
     >>> 'Workspace' in types.objectIds()
     True
+    >>> oid = self.folder.invokeFactory('Workspace Folder', id='workspaces', title='Workspaces')
+    >>> folder = self.folder[oid]
     >>> wsid = folder.invokeFactory('Workspace', id='test-ws', title='Testing')
     >>> ws = folder[wsid]
     >>> 'places' in ws.objectIds()
@@ -20,4 +24,3 @@ Make a workspace
     True
     >>> 'names' in ws.objectIds()
     True
-

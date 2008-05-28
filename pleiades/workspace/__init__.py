@@ -31,6 +31,7 @@ def initialize(context):
     # once!
     
     from content import workspace
+    from content import folder
     
     content_types, constructors, ftis = atapi.process_types(
         atapi.listTypes(config.PROJECTNAME),

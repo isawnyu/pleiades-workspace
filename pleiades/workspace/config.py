@@ -15,4 +15,5 @@ PROJECTNAME = "pleiades.workspace"
 
 ADD_PERMISSIONS = {
     "Workspace" : "Pleiades: Add Workspace",
+    "Workspace Folder" : "Add portal content"
 }
