@@ -1,9 +1,21 @@
-from zope.interface import Interface
+from zope.interface import Interface, Attribute
 from zope import schema
 
 from zope.app.container.constraints import contains
 
 from pleiades.workspace import WorkspaceMessageFactory as _
+
+
+class IResource(Interface):
+    
+    def attach(workspace):
+        """Attach object to a workspace."""
+
+    def detach(workspace):
+        """Detach object from a workspace."""
+
+    wsuids = Attribute("List of workspace UIDs")
+
 
 class IWorkspace(Interface):
     """A container

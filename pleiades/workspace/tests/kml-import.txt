@@ -60,9 +60,9 @@ Upload
 
 Verify import
 
-    >>> 'apollonia-sozousa-portus-cyrenorum' in ws['names']
+    >>> 'apollonia-sozousa-portus-cyrenorum' in [o.id for o in ws['names'].queryCatalog()]
     True
-    >>> 'ptolemais-barkes-limen' in ws['names']
+    >>> 'ptolemais-barkes-limen' in [o.id for o in ws['names'].queryCatalog()]
     True
-    >>> len(ws['locations'])
+    >>> len(list(ws['locations'].queryCatalog()))
     11

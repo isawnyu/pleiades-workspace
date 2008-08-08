@@ -47,6 +47,23 @@ class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
     """
 
     def afterSetUp(test):
-        lpf = test.portal.portal_types['Workspace Folder']
+        pt = test.portal.portal_types
+        wf = pt['Workspace Folder']
+        wf_allow = wf.global_allow
+        wf.global_allow = True
+
+        lpf = pt['Large Plone Folder']
         lpf_allow = lpf.global_allow
         lpf.global_allow = True
+
+        n = pt['Name']
+        n_allow = n.global_allow
+        n.global_allow = True
+
+        try:
+            test.setRoles(('Manager', 'Contributor'))
+            test.portal.invokeFactory('Large Plone Folder', id='names')
+            test.portal.invokeFactory('LocationContainer', id='locations')
+            test.portal.invokeFactory('PlaceContainer', id='places')
+        except:
+            raise

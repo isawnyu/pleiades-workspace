@@ -40,25 +40,15 @@
    -->
   <property name="immediate_view">atct_edit</property>
  
- <!-- global_allow specifies whether the object is generally addable. If
-      this is False, only those folders that set filter_content_types to
-      True and includes the portal_type of this object in the list of
-      allowed_content_types will allow creation of this type. Here,
-      we let cinema folders be addable in normal folders (provided the
-      user has the appropriate permissions, of course). We then explicitly
-      filter the content types allowed inside a Cinema Folder, restricting
-      them to Cinema, Promotion and other nested Cinema Folders. Of course, 
-      this can be changed in the ZODB later.
-   -->
   <property name="global_allow">True</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
     <element value="Place Container" />
     <element value="Location Container" />
     <element value="Folder" />
+    <element value="Topic" />
   </property>
  
- <!-- We do not allow discussion on cinema folders by default -->
   <property name="allow_discussion">False</property>
  
  <!-- The next twoproperties define the default view and available view

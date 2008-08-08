@@ -5,6 +5,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from elementtree import ElementTree as etree
 import keytree
+from pleiades.workspace.interfaces import IResource
+
 
 class KMLImporter(BrowserView):
     
@@ -14,15 +16,14 @@ class KMLImporter(BrowserView):
     def __call__(self):
         request = self.request
         response = self.request.response
-        
-        places = self.context['places']
-        names = self.context['names']
-        locations = self.context['locations']
-
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
         ptool = getToolByName(self.context, 'plone_utils')
 
+        places = portal['places']
+        names = portal['names']
+        locations = portal['locations']
+        
         savepoint = transaction.savepoint()
-
         try:
             k = etree.fromstring(request.file.read())
             kmlns = k.tag.split('}')[0][1:]
@@ -54,6 +55,12 @@ class KMLImporter(BrowserView):
                 a = place[aid]
                 a.addReference(names[nid], 'hasName')
                 a.addReference(locations[lid], 'hasLocation')
+
+                # Attach to workspace
+                IResource(names[nid]).attach(self.context)
+                IResource(locations[lid]).attach(self.context)
+                IResource(places[pid]).attach(self.context)
+                
         except:
             savepoint.rollback()
             raise

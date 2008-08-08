@@ -1,11 +1,13 @@
-#from Acquisition import aq_inner
+import glob
+from os.path import basename
+from elementtree import ElementTree as etree
 import transaction
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-from elementtree import ElementTree as etree
 import keytree
-from Products.PleiadesEntity.Extensions.loader import loaden
+from Products.PleiadesEntity.Extensions.loader import load_place
+from pleiades.workspace.interfaces import IResource
 
 
 class XMLImporter(BrowserView):
@@ -15,7 +17,32 @@ class XMLImporter(BrowserView):
 
     def __call__(self):
         request = self.request
-        return loaden(self.context, request.form['sourcedir'])
+        sourcedir = request.form.get('sourcedir', None)
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
+        places = portal['places']
+        names = portal['names']
+        locations = portal['locations']
+        failures = []
+        count = 0
+        for xml in glob.glob("%s/*.xml" % sourcedir):
+            try:
+                result = load_place(portal, xml)
+                for nid in result['name_ids']:
+                    IResource(names[nid]).attach(self.context)
+                for lid in result['location_ids']:
+                    IResource(locations[lid]).attach(self.context)
+                IResource(places[result['place_id']]).attach(self.context)
+                count += 1
+            except Exception, e:
+                failures.append([basename(xml), str(e)])
+    
+        if len(failures) == 0:
+            return "Loaded %d of %d files." % (count, count)
+        else:
+            msg = "Loaded %d of %d files. Failures:\n" % (count, count + len(failures))
+            for f in failures:
+                msg += "%s\n" % str(f)
+            return msg
 
 
 class XMLImportForm(BrowserView):

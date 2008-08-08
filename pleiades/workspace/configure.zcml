@@ -10,6 +10,36 @@
   <include package=".browser" />
   <include package=".content" />
 
+  <adapter
+    factory=".resource.Resource"
+    for="Products.PleiadesEntity.content.Location.Location"
+    trusted="true"
+    />
+
+  <adapter
+    factory=".resource.Resource"
+    for="Products.PleiadesEntity.content.Name.Name"
+    trusted="true"
+    />
+
+  <adapter
+    factory=".resource.Resource"
+    for="Products.PleiadesEntity.content.Place.Place"
+    trusted="true"
+    />
+
+  <subscriber
+    handler=".event.reindexDocSubscriber"
+    for=".event.IResourceModifiedEvent"
+    />
+
+  <class class=".resource.Resource">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IResource"
+      />
+  </class>
+
   <genericsetup:registerProfile
     name="default"
     title="Pleiades Content Workspaces"

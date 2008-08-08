@@ -59,9 +59,9 @@ Upload
 
 Verify import
 
-    >>> len(ws['locations'])
+    >>> len(list(ws['locations'].queryCatalog()))
     264
-    >>> len(ws['places'])
+    >>> len(list(ws['places'].queryCatalog()))
     315
-    >>> 'aloanda' in ws['names']
+    >>> 'aloanda' in [o.id for o in ws['names'].queryCatalog()]
     True

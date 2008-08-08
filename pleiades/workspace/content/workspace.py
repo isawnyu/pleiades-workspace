@@ -1,14 +1,3 @@
-"""Definition of the CinemaFolder content type and associated schemata and
-other logic.
-
-This file contains a number of comments explaining the various lines of
-code. Other files in this sub-package contain analogous code, but will 
-not be commented as heavily.
-
-Please see README.txt for more information on how the content types in
-this package are used.
-"""
-
 from zope.interface import implements
 from zope.component import adapter, getMultiAdapter, getUtility
 
@@ -93,10 +82,20 @@ class Workspace(folder.ATFolder):
     description = atapi.ATFieldProperty('description')
     text = atapi.ATFieldProperty('text')
 
+    def initTopic(self, oid, type):
+        topic = self[oid]
+        c = topic.addCriterion('pleiades_wsuids', 'ATSelectionCriterion')
+        c.setValue(self.UID())
+        c = topic.addCriterion('Type', 'ATPortalTypeCriterion')
+        c.setValue(type)
+
     def initializeArchetype(self, **kwargs):
-        self['places'] = PlaceContainer('places')
-        self['locations'] = LocationContainer('locations')
-        self['names'] = folder.ATFolder('names')
+        tid = self.invokeFactory('Topic', id='locations', title='Locations')
+        self.initTopic(tid, 'Location')
+        tid = self.invokeFactory('Topic', id='names', title='Names')
+        self.initTopic(tid, 'Name')
+        tid = self.invokeFactory('Topic', id='places', title='Places')
+        self.initTopic(tid, 'Place')
 
 # This line tells Archetypes about the content type
 atapi.registerType(Workspace, PROJECTNAME)
