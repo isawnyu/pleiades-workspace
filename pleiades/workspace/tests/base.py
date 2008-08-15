@@ -62,8 +62,9 @@ class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
 
         try:
             test.setRoles(('Manager', 'Contributor'))
-            test.portal.invokeFactory('Large Plone Folder', id='names')
+            test.portal.invokeFactory('NameContainer', id='names')
             test.portal.invokeFactory('LocationContainer', id='locations')
+            test.portal.invokeFactory('FeatureContainer', id='features')
             test.portal.invokeFactory('PlaceContainer', id='places')
         except:
             raise

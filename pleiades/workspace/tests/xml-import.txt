@@ -14,6 +14,8 @@ Setup workspace
     >>> ws = folder[wsid]
     >>> 'places' in ws.objectIds()
     True
+    >>> 'features' in ws.objectIds()
+    True
     >>> 'locations' in ws.objectIds()
     True
     >>> 'names' in ws.objectIds()
@@ -63,5 +65,5 @@ Verify import
     264
     >>> len(list(ws['places'].queryCatalog()))
     315
-    >>> 'aloanda' in [o.id for o in ws['names'].queryCatalog()]
+    >>> 'Aloanda' in [o.Title for o in ws['names'].queryCatalog()]
     True

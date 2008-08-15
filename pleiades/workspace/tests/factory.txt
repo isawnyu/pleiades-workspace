@@ -20,6 +20,8 @@ Make a workspace folder and workspace
     >>> ws = folder[wsid]
     >>> 'places' in ws.objectIds()
     True
+    >>> 'features' in ws.objectIds()
+    True
     >>> 'locations' in ws.objectIds()
     True
     >>> 'names' in ws.objectIds()

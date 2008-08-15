@@ -20,6 +20,7 @@ class XMLImporter(BrowserView):
         sourcedir = request.form.get('sourcedir', None)
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
         places = portal['places']
+        features = portal['features']
         names = portal['names']
         locations = portal['locations']
         failures = []
@@ -31,6 +32,8 @@ class XMLImporter(BrowserView):
                     IResource(names[nid]).attach(self.context)
                 for lid in result['location_ids']:
                     IResource(locations[lid]).attach(self.context)
+                for fid in result['feature_ids']:
+                    IResource(features[fid]).attach(self.context)
                 IResource(places[result['place_id']]).attach(self.context)
                 count += 1
             except Exception, e:

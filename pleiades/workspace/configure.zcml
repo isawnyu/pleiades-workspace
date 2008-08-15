@@ -24,6 +24,12 @@
 
   <adapter
     factory=".resource.Resource"
+    for="Products.PleiadesEntity.content.Feature.Feature"
+    trusted="true"
+    />
+
+  <adapter
+    factory=".resource.Resource"
     for="Products.PleiadesEntity.content.Place.Place"
     trusted="true"
     />

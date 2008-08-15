@@ -1,4 +1,3 @@
-#from Acquisition import aq_inner
 import transaction
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -20,6 +19,7 @@ class KMLImporter(BrowserView):
         ptool = getToolByName(self.context, 'plone_utils')
 
         places = portal['places']
+        features = portal['features']
         names = portal['names']
         locations = portal['locations']
         
@@ -39,27 +39,26 @@ class KMLImporter(BrowserView):
                         )
                 nid = names.invokeFactory(
                         'Name',
-                        id=ptool.normalizeString(name),
                         title=name.encode('utf-8')
                         )
                 pid = places.invokeFactory(
                         'Place',
-                        id=ptool.normalizeString(name),
                         title=name.encode('utf-8')
                         )
-                place = places[pid]
-                aid = place.invokeFactory(
-                        'PlacefulAssociation',
-                        id=nid
+                fid = features.invokeFactory(
+                        'Feature',
                         )
-                a = place[aid]
-                a.addReference(names[nid], 'hasName')
-                a.addReference(locations[lid], 'hasLocation')
+                f = features[fid]
+                f.addReference(names[nid], 'hasName')
+                f.addReference(locations[lid], 'hasLocation')
+                p = places[pid]
+                p.addReference(f, 'hasFeature')
 
                 # Attach to workspace
                 IResource(names[nid]).attach(self.context)
                 IResource(locations[lid]).attach(self.context)
-                IResource(places[pid]).attach(self.context)
+                IResource(f).attach(self.context)
+                IResource(p).attach(self.context)
                 
         except:
             savepoint.rollback()

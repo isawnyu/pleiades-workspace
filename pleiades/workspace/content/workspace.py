@@ -94,6 +94,8 @@ class Workspace(folder.ATFolder):
         self.initTopic(tid, 'Location')
         tid = self.invokeFactory('Topic', id='names', title='Names')
         self.initTopic(tid, 'Name')
+        tid = self.invokeFactory('Topic', id='features', title='Features')
+        self.initTopic(tid, 'Feature')
         tid = self.invokeFactory('Topic', id='places', title='Places')
         self.initTopic(tid, 'Place')
 
