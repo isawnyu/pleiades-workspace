@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<atcttool>
+  <topic_indexes>
+    <index
+      name="pleiades_wsuids"
+      description="Pleiades workspace UID"
+      enabled="True" 
+      friendlyName="Pleiades workspace UID"
+      >
+      <criteria>ATSimpleStringCriterion</criteria>
+    </index>
+  </topic_indexes>
+  <topic_metadata>
+    <metadata
+      name="pleiades_wsuids"
+      description="Pleiades workspace UID"
+      enabled="True" 
+      friendlyName="Pleiades workspace UID"
+      />
+  </topic_metadata>
+</atcttool>

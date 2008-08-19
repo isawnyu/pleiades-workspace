@@ -16,7 +16,7 @@ from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
 from pleiades.workspace.interfaces import IWorkspace
 from pleiades.workspace.config import PROJECTNAME
-from pleiades.workspace import WorkspaceMessageFactory as _
+from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 
 from Products.PleiadesEntity.content.PlaceContainer import PlaceContainer
 from Products.PleiadesEntity.content.LocationContainer import LocationContainer
@@ -84,7 +84,7 @@ class Workspace(folder.ATFolder):
 
     def initTopic(self, oid, type):
         topic = self[oid]
-        c = topic.addCriterion('pleiades_wsuids', 'ATSelectionCriterion')
+        c = topic.addCriterion('pleiades_wsuids', 'ATSimpleStringCriterion')
         c.setValue(self.UID())
         c = topic.addCriterion('Type', 'ATPortalTypeCriterion')
         c.setValue(type)

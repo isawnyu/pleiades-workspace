@@ -1,17 +1,12 @@
 """Main product initializer
 """
 
-from zope.i18nmessageid import MessageFactory
-from pleiades.workspace import config
-
+from pleiades.workspace import config, resource
+from Products.CMFPlone.CatalogTool import registerIndexableAttribute
 from Products.Archetypes import atapi
 from Products.CMFCore import utils
 
-# Define a message factory for when this product is internationalised.
-# This will be imported with the special name "_" in most modules. Strings
-# like _(u"message") will then be extracted by i18n tools for translation.
-
-WorkspaceMessageFactory = MessageFactory('pleiades.workspace')
+registerIndexableAttribute('pleiades_wsuids', resource.pleiades_wsuids_value)
 
 def initialize(context):
     """Intializer called when used as a Zope 2 product.

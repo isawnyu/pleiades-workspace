@@ -1,0 +1,77 @@
+Test creation of a workspace
+============================
+
+Setup
+
+    >>> self.setRoles(('Manager', 'Contributor'))
+    >>> folder = self.folder
+    >>> names = self.portal['names']
+    >>> locations = self.portal['locations']
+    >>> features = self.portal['features']
+    >>> places = self.portal['places']
+
+Make a workspace
+
+    >>> oid = self.folder.invokeFactory('Workspace Folder', id='workspaces', title='Workspaces')
+    >>> spaces = self.folder[oid]
+    >>> wsid = spaces.invokeFactory('Workspace', id='test-ws', title='Testing')
+    >>> ws = spaces[wsid]
+
+Create some test entities
+
+    >>> nid = names.invokeFactory('Name', title='Civitas Non', nameTransliterated='Civitas Non', nameAttested='Civitas Non', nameLanguage='la', nameType='geographic')
+    >>> lid = locations.invokeFactory('Location')
+    >>> pid = places.invokeFactory('Place')
+    >>> fid = features.invokeFactory('Feature')
+
+Attach a workspace to them
+
+    >>> from pleiades.workspace.interfaces import IResource
+    >>> IResource(names[nid]).attach(ws)
+    >>> IResource(locations[lid]).attach(ws)
+    >>> IResource(features[fid]).attach(ws)
+    >>> IResource(places[pid]).attach(ws)
+    >>> wsuid = ws.UID()
+    >>> IResource(names[nid]).wsuids == [wsuid]
+    True
+    >>> IResource(locations[lid]).wsuids == [wsuid]
+    True
+    >>> IResource(features[fid]).wsuids == [wsuid]
+    True
+    >>> IResource(places[pid]).wsuids == [wsuid]
+    True
+
+See the content appear in the workspace collections
+
+    >>> brains = ws.locations.queryCatalog()
+    >>> brains[0].id == lid
+    True
+    >>> brains = ws.names.queryCatalog()
+    >>> brains[0].id == nid
+    True
+    >>> brains = ws.places.queryCatalog()
+    >>> brains[0].id == pid
+    True
+
+Detach
+
+    >>> IResource(names[nid]).detach(ws)
+    >>> IResource(locations[lid]).detach(ws)
+    >>> IResource(features[fid]).detach(ws)
+    >>> IResource(places[pid]).detach(ws)
+    >>> IResource(names[nid]).wsuids == []
+    True
+    >>> IResource(locations[lid]).wsuids == []
+    True
+    >>> IResource(features[fid]).wsuids == []
+    True
+    >>> IResource(places[pid]).wsuids == []
+    True
+    >>> list(ws.locations.queryCatalog()) == []
+    True
+    >>> list(ws.names.queryCatalog()) == []
+    True
+    >>> list(ws.features.queryCatalog()) == []
+    True
+    >>> list(ws.places.queryCatalog()) == []
+    True

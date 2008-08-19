@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step
+    id="pleiades.workspace-various"
+    version="20080806-01"
+	handler="pleiades.workspace.setuphandlers.setupVarious"
+	title="Pleiades Workspace Setup"
+    >
+  </import-step>
+</import-steps>

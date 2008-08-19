@@ -1,9 +1,8 @@
 from zope.interface import Interface, Attribute
 from zope import schema
-
 from zope.app.container.constraints import contains
 
-from pleiades.workspace import WorkspaceMessageFactory as _
+from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 
 
 class IResource(Interface):

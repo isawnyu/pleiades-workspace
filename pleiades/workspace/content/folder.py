@@ -27,7 +27,7 @@ from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
 from pleiades.workspace.interfaces import IWorkspaceFolder
 from pleiades.workspace.config import PROJECTNAME
-from pleiades.workspace import WorkspaceMessageFactory as _
+from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 
 from Products.PleiadesEntity.content.PlaceContainer import PlaceContainer
 from Products.PleiadesEntity.content.LocationContainer import LocationContainer
