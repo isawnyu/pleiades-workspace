@@ -11,6 +11,10 @@
   <include package=".content" />
   <include package=".portlets" />
 
+  <class class="Products.Archetypes.BaseBTreeFolder.BaseBTreeFolder">
+    <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
+  </class>
+
   <adapter
     factory=".resource.Resource"
     for="Products.PleiadesEntity.content.Location.Location"

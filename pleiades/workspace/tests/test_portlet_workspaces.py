@@ -33,7 +33,7 @@ class TestPortlet(WorkspaceTestCase):
         addview.createAndAdd(data={})
 
         self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], promotions.Assignment))
+        self.failUnless(isinstance(mapping.values()[0], workspaces.Assignment))
 
     def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
@@ -41,7 +41,7 @@ class TestPortlet(WorkspaceTestCase):
 
         mapping['foo'] = workspaces.Assignment()
         editview = getMultiAdapter((mapping['foo'], request), name='edit')
-        self.failUnless(isinstance(editview, promotions.EditForm))
+        self.failUnless(isinstance(editview, workspaces.EditForm))
 
     def testRenderer(self):
         context = self.folder
@@ -51,7 +51,7 @@ class TestPortlet(WorkspaceTestCase):
         assignment = workspaces.Assignment()
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, promotions.Renderer))
+        self.failUnless(isinstance(renderer, workspaces.Renderer))
 
 class TestRenderer(WorkspaceFunctionalTestCase):
     

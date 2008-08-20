@@ -2,7 +2,7 @@
 """
 
 PROJECTNAME = "pleiades.workspace"
-WORKSPACES_PORTLET_COLUMN = u"plone.rightcolumn"
+WORKSPACES_PORTLET_COLUMN = u"plone.leftcolumn"
 
 # This maps portal types to their corresponding add permissions.
 # These are referenced in the root product __init__.py, during

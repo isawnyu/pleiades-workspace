@@ -27,11 +27,8 @@ from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 # It will be used to generate add and edit forms.
 
 class IWorkspacesPortlet(IPortletDataProvider):
-
-    count = schema.Int(title=_(u'Number of promotions to display'),
-                       description=_(u'Maximum number of promotions to be shown'),
-                       required=True,
-                       default=5)
+    """Workspace portlet
+    """
                        
 # The assignment is a persistent object used to store the configuration of
 # a particular instantiation of the portlet.
@@ -39,12 +36,10 @@ class IWorkspacesPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(IWorkspacesPortlet)
 
-    def __init__(self, count=5):
-        self.count = count
+    title = _(u"Workspaces")
 
-    @property
-    def title(self):
-        return _(u"Workspaces")
+    def __init__(self):
+        pass
 
 # The renderer is like a view (in fact, like a content provider/viewlet). The
 # item self.data will typically be the assignment (although it is possible
