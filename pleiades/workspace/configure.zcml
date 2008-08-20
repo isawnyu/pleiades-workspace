@@ -9,6 +9,7 @@
 
   <include package=".browser" />
   <include package=".content" />
+  <include package=".portlets" />
 
   <adapter
     factory=".resource.Resource"

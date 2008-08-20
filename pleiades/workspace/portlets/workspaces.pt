@@ -1,0 +1,33 @@
+<dl class="portlet portletPromotions"
+    i18n:domain="pleiades.workspace"
+    >
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        Workspaces
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:items tal:repeat="workspace view/workspaces">
+        <dd class="portletItem"
+            tal:define="oddrow repeat/workspace/odd;"
+            tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+            <a href=""
+               tal:attributes="href workspace/url;
+                               title workspace/title;">
+                <tal:title content="workspace/title">
+                    Title
+                </tal:title>
+                <span class="portletItemDetails"
+                      tal:content="workspace/summary"
+                      >Workspace summary</span>
+            </a>
+        </dd>
+    </tal:items>
+
+    <dd class="portletFooter">
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>
