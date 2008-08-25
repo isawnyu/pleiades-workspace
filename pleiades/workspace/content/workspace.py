@@ -1,5 +1,6 @@
 from zope.interface import implements
 from zope.component import adapter, getMultiAdapter, getUtility
+from zope.event import notify
 
 from zope.app.container.interfaces import INameChooser
 
@@ -14,12 +15,14 @@ from Products.Archetypes.interfaces import IObjectInitializedEvent
 from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
-from pleiades.workspace.interfaces import IWorkspace
 from pleiades.workspace.config import PROJECTNAME
 from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 
 from Products.PleiadesEntity.content.PlaceContainer import PlaceContainer
 from Products.PleiadesEntity.content.LocationContainer import LocationContainer
+
+from pleiades.workspace.interfaces import IResource, IWorkspace
+from pleiades.workspace.event import ResourceModifiedEvent
 
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.
@@ -98,6 +101,15 @@ class Workspace(folder.ATFolder):
         self.initTopic(tid, 'Feature')
         tid = self.invokeFactory('Topic', id='places', title='Places')
         self.initTopic(tid, 'Place')
+
+    def attach(self, ob):
+        IResource(ob).wsuids = [self.UID()]
+        notify(ResourceModifiedEvent(ob))
+
+    def detach(self, ob):
+        IResource(ob).wsuids = []
+        notify(ResourceModifiedEvent(ob))
+
 
 # This line tells Archetypes about the content type
 atapi.registerType(Workspace, PROJECTNAME)

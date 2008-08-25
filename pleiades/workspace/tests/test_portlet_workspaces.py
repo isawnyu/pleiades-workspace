@@ -62,7 +62,7 @@ class TestRenderer(WorkspaceFunctionalTestCase):
         pid = self.portal['places'].invokeFactory('Place')
         self.place = self.portal['places'][pid]
         self.workspace = self.portal['workspaces']['ws1']
-        IResource(self.place).attach(self.workspace)
+        self.workspace.attach(self.place)
 
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder

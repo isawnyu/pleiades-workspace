@@ -29,12 +29,12 @@ class XMLImporter(BrowserView):
             try:
                 result = load_place(portal, xml)
                 for nid in result['name_ids']:
-                    IResource(names[nid]).attach(self.context)
+                    self.context.attach(names[nid])
                 for lid in result['location_ids']:
-                    IResource(locations[lid]).attach(self.context)
+                    self.context.attach(locations[lid])
                 for fid in result['feature_ids']:
-                    IResource(features[fid]).attach(self.context)
-                IResource(places[result['place_id']]).attach(self.context)
+                    self.context.attach(features[fid])
+                self.context.attach(places[result['place_id']])
                 count += 1
             except Exception, e:
                 failures.append([basename(xml), str(e)])

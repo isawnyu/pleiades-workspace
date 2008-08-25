@@ -27,10 +27,10 @@ Create some test entities
 Attach a workspace to them
 
     >>> from pleiades.workspace.interfaces import IResource
-    >>> IResource(names[nid]).attach(ws)
-    >>> IResource(locations[lid]).attach(ws)
-    >>> IResource(features[fid]).attach(ws)
-    >>> IResource(places[pid]).attach(ws)
+    >>> ws.attach(names[nid])
+    >>> ws.attach(locations[lid])
+    >>> ws.attach(features[fid])
+    >>> ws.attach(places[pid])
     >>> wsuid = ws.UID()
     >>> IResource(names[nid]).wsuids == [wsuid]
     True
@@ -55,10 +55,10 @@ See the content appear in the workspace collections
 
 Detach
 
-    >>> IResource(names[nid]).detach(ws)
-    >>> IResource(locations[lid]).detach(ws)
-    >>> IResource(features[fid]).detach(ws)
-    >>> IResource(places[pid]).detach(ws)
+    >>> ws.detach(names[nid])
+    >>> ws.detach(locations[lid])
+    >>> ws.detach(features[fid])
+    >>> ws.detach(places[pid])
     >>> IResource(names[nid]).wsuids == []
     True
     >>> IResource(locations[lid]).wsuids == []

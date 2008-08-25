@@ -59,4 +59,18 @@
     permission="cmf.AddPortalContent"
     />
 
+  <!--browser:page
+    for="..interfaces.IWorkspace"
+    name="import-xml-form"
+    class=".xml.XMLImportForm"
+    permission="zope2.View"
+    /-->
+
+  <browser:page
+    for="Products.PleiadesEntity.content.interfaces.IName"
+    name="manage-workspaces"
+    class=".manage.ManageWorkspaces"
+    permission="cmf.AddPortalContent"
+    />
+
 </configure>

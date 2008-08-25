@@ -55,10 +55,10 @@ class KMLImporter(BrowserView):
                 p.addReference(f, 'hasFeature')
 
                 # Attach to workspace
-                IResource(names[nid]).attach(self.context)
-                IResource(locations[lid]).attach(self.context)
-                IResource(f).attach(self.context)
-                IResource(p).attach(self.context)
+                self.context.attach(names[nid])
+                self.context.attach(locations[lid])
+                self.context.attach(f)
+                self.context.attach(p)
                 
         except:
             savepoint.rollback()

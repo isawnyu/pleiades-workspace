@@ -2,10 +2,8 @@ import logging
 from zope.interface import implements
 from zope.annotation.interfaces import IAnnotations
 from zope.component.interfaces import ComponentLookupError
-from zope.event import notify
 from persistent.dict import PersistentDict
 from pleiades.workspace.interfaces import IResource
-from pleiades.workspace.event import ResourceModifiedEvent
 
 logger = logging.getLogger('pleiades.workspace.resource')
 
@@ -25,17 +23,13 @@ class Resource(object):
             self.anno = annotations[KEY]
             self.anno['wsuids'] = []
 
-    def attach(self, workspace):
-        self.anno['wsuids'].append(workspace.UID())
-        notify(ResourceModifiedEvent(self.context))
-
-    def detach(self, workspace):
-        self.anno['wsuids'].remove(workspace.UID())
-        notify(ResourceModifiedEvent(self.context))
-
-    @property
-    def wsuids(self):
+    def _get_wsuids(self):
         return self.anno['wsuids']
+
+    def _set_wsuids(self, value):
+        self.anno['wsuids'] = value
+
+    wsuids = property(_get_wsuids, _set_wsuids)
 
 
 def pleiades_wsuids_value(object, portal, **kwargs):
