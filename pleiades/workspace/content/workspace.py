@@ -12,7 +12,7 @@ from Acquisition import aq_inner, aq_parent
 from Products.Archetypes import atapi
 from Products.Archetypes.interfaces import IObjectInitializedEvent
 
-from Products.ATContentTypes.content import folder
+from Products.ATContentTypes.content import folder, topic
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
 from pleiades.workspace.config import PROJECTNAME
@@ -21,8 +21,16 @@ from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 from Products.PleiadesEntity.content.PlaceContainer import PlaceContainer
 from Products.PleiadesEntity.content.LocationContainer import LocationContainer
 
-from pleiades.workspace.interfaces import IResource, IWorkspace
+from pleiades.workspace.interfaces import IResource, IWorkspace, IWorkspaceCollection
 from pleiades.workspace.event import ResourceModifiedEvent
+
+
+class WorkspaceCollection(topic.ATTopic):
+    """Specialized topic.
+    """
+    implements(IWorkspaceCollection)
+    portal_type = "Workspace Collection"
+
 
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.
@@ -85,23 +93,6 @@ class Workspace(folder.ATFolder):
     description = atapi.ATFieldProperty('description')
     text = atapi.ATFieldProperty('text')
 
-    def initTopic(self, oid, type):
-        topic = self[oid]
-        c = topic.addCriterion('pleiades_wsuids', 'ATSimpleStringCriterion')
-        c.setValue(self.UID())
-        c = topic.addCriterion('Type', 'ATPortalTypeCriterion')
-        c.setValue(type)
-
-    def initializeArchetype(self, **kwargs):
-        tid = self.invokeFactory('Topic', id='locations', title='Locations')
-        self.initTopic(tid, 'Location')
-        tid = self.invokeFactory('Topic', id='names', title='Names')
-        self.initTopic(tid, 'Name')
-        tid = self.invokeFactory('Topic', id='features', title='Features')
-        self.initTopic(tid, 'Feature')
-        tid = self.invokeFactory('Topic', id='places', title='Places')
-        self.initTopic(tid, 'Place')
-
     def attach(self, ob):
         IResource(ob).wsuids = [self.UID()]
         notify(ResourceModifiedEvent(ob))
@@ -113,4 +104,51 @@ class Workspace(folder.ATFolder):
 
 # This line tells Archetypes about the content type
 atapi.registerType(Workspace, PROJECTNAME)
+atapi.registerType(WorkspaceCollection, PROJECTNAME)
 
+
+def initTypeTopic(topic, type, uid, acquire=True):
+    topic.setAcquireCriteria(acquire)
+    c = topic.addCriterion('pleiades_wsuids', 'ATSimpleStringCriterion')
+    c.setValue(uid)
+    c = topic.addCriterion('Type', 'ATPortalTypeCriterion')
+    c.setValue(type)
+
+def initStateTopic(topic, state, uid, acquire=True):
+    topic.setAcquireCriteria(acquire)
+    c = topic.addCriterion('pleiades_wsuids', 'ATSimpleStringCriterion')
+    c.setValue(uid)
+    c = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
+    c.setValue(state)
+
+@adapter(IWorkspace, IObjectInitializedEvent)
+def add_workspace_collections(ob, event):
+    types = [('locations', 'Location'),
+             ('names', 'Name'),
+             ('features', 'Feature'),
+             ('places', 'Place')]
+    states = ['drafting', 'pending', 'published']
+    for name, tname in types:
+        tid = ob.invokeFactory(
+                'Workspace Collection', id=name, title=name.capitalize()
+                )
+        topic = ob[tid]
+        initTypeTopic(topic, tname, ob.UID())
+        for s in states:
+            sid = topic.invokeFactory(
+                    'Workspace Collection', id=s, title=s.capitalize()
+                    )
+            subtopic = topic[sid]
+            initStateTopic(subtopic, sid, ob.UID(), True)
+    for s in states:
+        sid = ob.invokeFactory(
+                'Workspace Collection', id=s, title=s.capitalize()
+                )
+        topic = ob[sid]
+        initStateTopic(topic, s, ob.UID())
+        for name, tname in types:
+            tid = topic.invokeFactory(
+                    'Workspace Collection', id=name, title=name.capitalize()
+                    )
+            subtopic = topic[tid]
+            initTypeTopic(subtopic, tname, ob.UID(), True)

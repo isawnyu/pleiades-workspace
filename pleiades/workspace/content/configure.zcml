@@ -15,6 +15,17 @@
       />
   </class>
 
+  <class class=".workspace.WorkspaceCollection">
+    <require
+      permission="zope2.View"
+      interface="..interfaces.IWorkspaceCollection"
+      />
+    <require
+      permission="cmf.ModifyPortalContent"
+      set_schema="..interfaces.IWorkspaceCollection"
+      />
+  </class>
+
   <class class=".folder.WorkspaceFolder">
     <require
       permission="zope2.View"
@@ -25,5 +36,7 @@
       set_schema="..interfaces.IWorkspaceFolder"
       />
   </class>
+
+  <subscriber handler=".workspace.add_workspace_collections"/>
 
 </configure>

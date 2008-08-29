@@ -1,7 +1,7 @@
 import unittest
 import doctest
 from zope.testing import doctestunit
-from zope.component import testing, eventtesting
+import zope.component.eventtesting
 from Testing import ZopeTestCase as ztc
 from pleiades.workspace.tests import base
 
@@ -29,12 +29,14 @@ def test_suite():
             'kml-import.txt',
             package='pleiades.workspace.tests',
             test_class=base.WorkspaceFunctionalTestCase,
-            optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
+            optionflags=optionflags
+            ),
         ztc.ZopeDocFileSuite(
             'xml-import.txt',
             package='pleiades.workspace.tests',
             test_class=base.WorkspaceFunctionalTestCase,
-            optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
+            optionflags=optionflags
+            ),
         ])
 
 if __name__ == '__main__':

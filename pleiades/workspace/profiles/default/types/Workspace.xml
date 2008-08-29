@@ -43,10 +43,9 @@
   <property name="global_allow">True</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
-    <element value="Place Container" />
-    <element value="Location Container" />
     <element value="Folder" />
     <element value="Topic" />
+    <element value="Workspace Collection" />
   </property>
  
   <property name="allow_discussion">False</property>

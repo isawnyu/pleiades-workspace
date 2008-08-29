@@ -18,6 +18,9 @@ Make a workspace folder and workspace
     >>> folder = self.folder[oid]
     >>> wsid = folder.invokeFactory('Workspace', id='test-ws', title='Testing')
     >>> ws = folder[wsid]
+    >>> from zope.event import notify
+    >>> from Products.Archetypes.event import ObjectInitializedEvent
+    >>> notify(ObjectInitializedEvent(ws))
     >>> 'places' in ws.objectIds()
     True
     >>> 'features' in ws.objectIds()
@@ -25,4 +28,8 @@ Make a workspace folder and workspace
     >>> 'locations' in ws.objectIds()
     True
     >>> 'names' in ws.objectIds()
+    True
+    >>> 'drafting' in ws.objectIds()
+    True
+    >>> 'drafting' in ws['places'].objectIds()
     True

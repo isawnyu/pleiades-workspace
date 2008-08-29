@@ -7,6 +7,14 @@
       i18n:domain="pleiades.workspace">
 <body>
 
+<metal:css fill-slot="css_slot">
+  <style 
+    type="text/css" media="all"
+    tal:content="string: @import url(${context/++resource++pleiades-workspace.css});"
+    >
+  </style>
+</metal:css>
+
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
            tal:define="text context/text;">
@@ -33,32 +41,34 @@
 
         <div tal:condition="text" metal:use-macro="python:context.widget('text', mode='view')" />
         
-        <tal:areas condition="view/have_cinema_folders">
-            <h2 i18n:translate="title_cinemafolder_subareas">Areas</h2>
-            <dl>
-                <tal:block repeat="area view/cinema_folders">
-                    <dt>
-                        <a tal:attributes="href area/url"
-                           tal:content="area/title" />
-                    </dt>
-                    <dd tal:content="area/description" />
-                </tal:block>
-            </dl>
-        </tal:areas>
+        <tal:collections>
+            <h2 i18n:translate="title_workspace_collections">Data Dashboard</h2>
+            <table class="workspace-dashboard">
+              <tr>
+                <th>Type</th>
+                <th>Drafting</th>
+                <th>Pending</th>
+                <th>Published</th>
+                <th>All</th>
+              </tr>
+              <tr tal:repeat="tname python:['locations', 'names', 'features', 'places']">
+                <tal:row tal:define="row python:view.collections_data[tname]">
+                <th tal:content="python:tname.capitalize()">NAME</th>
+                <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published', 'all')]">
+                  <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>,&nbsp;<a tal:attributes="href string:${data/url}/@@kml-document">[KML]</a>
+                </td>
+                </tal:row>
+              </tr>
+              <tr tal:define="row python:view.collections_data['all']">
+                <th>All</th>
+                <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published')]">
+                  <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;
+                  <a tal:attributes="href string:${data/url}/@@kml-document">[KML]</a>
+                </td>
+              </tr>
+            </table>
+        </tal:collections>
         
-        <tal:cinemas condition="view/have_cinemas">
-            <h2 i18n:translate="title_cinemafolder_subareas">Cinemas</h2>
-            <dl>
-                <tal:block repeat="cinema view/cinemas">
-                    <dt>
-                        <a tal:attributes="href cinema/url"
-                           tal:content="cinema/title" />
-                    </dt>
-                    <dd tal:content="cinema/address" />
-                </tal:block>
-            </dl>
-        </tal:cinemas>
-
         <div metal:use-macro="context/document_relateditems/macros/relatedItems">
             show related items if they exist
         </div>

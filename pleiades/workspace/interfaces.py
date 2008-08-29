@@ -10,11 +10,15 @@ class IResource(Interface):
     wsuids = Attribute("List of workspace UIDs")
 
 
+class IWorkspaceCollection(Interface):
+
+    contains('pleiades.workspace.interfaces.IWorkspaceCollection')
+
+
 class IWorkspace(Interface):
     """A container
     """
-    contains('Products.PleiadesEntity.content.interfaces.ILocationContainer',
-             'Products.PleiadesEntity.content.interfaces.IPlaceContainer',
+    contains('pleiades.workspace.interfaces.IWorkspaceCollection',
              'Products.ATContentTypes.interfaces.IATFolder'
              )
     

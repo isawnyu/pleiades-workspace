@@ -17,6 +17,7 @@ class KMLImporter(BrowserView):
         response = self.request.response
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
         ptool = getToolByName(self.context, 'plone_utils')
+        wtool = getToolByName(self.context, 'portal_workflow')
 
         places = portal['places']
         features = portal['features']
@@ -59,7 +60,7 @@ class KMLImporter(BrowserView):
                 self.context.attach(locations[lid])
                 self.context.attach(f)
                 self.context.attach(p)
-                
+               
         except:
             savepoint.rollback()
             raise

@@ -16,5 +16,6 @@ WORKSPACES_PORTLET_COLUMN = u"plone.leftcolumn"
 
 ADD_PERMISSIONS = {
     "Workspace" : "Pleiades: Add Workspace",
+    "Workspace Collection" : "Add portal content",
     "Workspace Folder" : "Add portal content"
 }

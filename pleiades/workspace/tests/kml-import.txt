@@ -12,6 +12,9 @@ Setup workspace
     True
     >>> wsid = folder.invokeFactory('Workspace', id='test-ws', title='Testing')
     >>> ws = folder[wsid]
+    >>> from zope.event import notify
+    >>> from Products.Archetypes.event import ObjectInitializedEvent
+    >>> notify(ObjectInitializedEvent(ws))
     >>> 'places' in ws.objectIds()
     True
     >>> 'features' in ws.objectIds()

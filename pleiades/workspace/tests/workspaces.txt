@@ -16,6 +16,9 @@ Make a workspace
     >>> spaces = self.folder[oid]
     >>> wsid = spaces.invokeFactory('Workspace', id='test-ws', title='Testing')
     >>> ws = spaces[wsid]
+    >>> from zope.event import notify
+    >>> from Products.Archetypes.event import ObjectInitializedEvent
+    >>> notify(ObjectInitializedEvent(ws))
 
 Create some test entities
 

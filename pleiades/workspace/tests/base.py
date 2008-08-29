@@ -20,10 +20,10 @@ def setup_pleiades_workspace():
     # Load the ZCML configuration for the optilux.policy package.
     # This includes the other products below as well.
     
-    #fiveconfigure.debug_mode = True
-    #import pleiades.workspace
-    #zcml.load_config('configure.zcml', pleiades.workspace)
-    #fiveconfigure.debug_mode = False
+    fiveconfigure.debug_mode = True
+    import pleiades.workspace
+    zcml.load_config('configure.zcml', pleiades.workspace)
+    fiveconfigure.debug_mode = False
     
     # We need to tell the testing framework that these products
     # should be available. This can't happen until after we have loaded
