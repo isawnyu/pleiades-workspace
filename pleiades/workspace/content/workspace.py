@@ -31,6 +31,11 @@ class WorkspaceCollection(topic.ATTopic):
     implements(IWorkspaceCollection)
     portal_type = "Workspace Collection"
 
+    @property
+    def members(self):
+        for brain in self.queryCatalog():
+            yield brain.getObject()
+
 
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.

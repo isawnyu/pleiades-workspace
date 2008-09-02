@@ -1,0 +1,53 @@
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="pleiades.workspace">
+<body>
+
+<metal:main fill-slot="main">
+<tal:main-macro metal:define-macro="main" tal:define="text context/text;">
+
+  <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+  <h3 class="documentFirstHeading">Member Transitions</h3>
+
+  <tal:transitions tal:condition="view/collects_state">
+  <p>All members of this collection may be transitioned to a different workflow
+  state using the form below.</p>
+
+  <form
+    action="manage-collection" 
+    enctype="multipart/form-data" 
+    method="post"
+    >
+    <p tal:repeat="transition view/transitions">
+      <input type="radio" name="transition"
+        tal:attributes="value transition/id"/>
+      <span tal:content="transition/title">TITLE</span>
+    </p>
+    <p><input name="submit" type="submit" value="Apply"/></p>
+  </form>
+  </tal:transitions>
+
+  <tal:links tal:condition="not:view/collects_state">
+  <p>The current collection cannot transition its members. Please try a
+  sub-collection that does collect on state:</p>
+  <ul>
+    <li tal:repeat="state python:['drafting', 'pending', 'published']">
+      <a tal:attributes="href string:${context/absolute_url}/${state}/@@manage-collection-form"
+        tal:content="state">STATE</a>
+    </li>
+  </ul>
+  </tal:links>
+
+</tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+

@@ -9,25 +9,24 @@
   <property name="description"
     i18n:translate=""
     >A folder for content development workspaces</property>
-  <!--property name="content_icon">++resource++workspace_icon.gif</property-->
+  <property name="content_icon">++resource++workspace_icon.gif</property>
   <property name="content_meta_type">Workspace Folder</property>
   <property name="product">pleiades.workspace</property>
   <property name="factory">addWorkspaceFolder</property>
-  <property name="immediate_view">atct_edit</property>
+  <property name="immediate_view">folder_listing</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
     <element value="Workspace" />
-    <element value="Document" />
   </property>
   <property name="allow_discussion">False</property>
-  <property name="default_view">view</property>
+  <property name="default_view">folder_listing</property>
   <property name="view_methods">
-    <element value="view"/>
     <element value="folder_summary_view"/>
     <element value="folder_tabular_view"/>
+    <element value="atct_album_view"/>
     <element value="folder_listing"/>
-  </property>
+   </property>
   <alias from="(Default)" to="(dynamic view)"/>
   <alias from="edit" to="atct_edit"/>
   <alias from="sharing" to="@@sharing"/>

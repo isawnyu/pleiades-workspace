@@ -8,15 +8,39 @@
 <body>
 
 <metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main"
-           tal:define="text context/text;">
+  <tal:main-macro
+    metal:define-macro="main"
+    tal:define="text context/text;"
+    >
 
-        <form action="import-kml" enctype="multipart/form-data" method="post">
-          <p>KML File: <input name="file" type="file"/></p>
-          <p><input name="submit" type="submit" value="Import"/></p>
-        </form>
+    <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+    <h1 class="documentFirstHeading">Upload Data From KML</h1>
+
+    <!--div class="documentDescription">
+      <span
+        metal:use-macro="python:context.widget('description', mode='view')"
+        />
+    </div-->
+
+    <!--div tal:replace="structure provider:plone.abovecontentbody" /-->
+
+    <p>Select an uncompressed KML document (.kml) from your filesystem and post
+    it using the form below. One feature and one place will be created for each
+    placemark element in the document; one name will be created for each
+    placemark title; one location will be created for each geometry.
+    </p>
+
+    <form 
+      action="import-kml"
+      enctype="multipart/form-data"
+      method="post"
+      >
+      <p>KML File: <input name="file" type="file"/></p>
+      <p><input name="submit" type="submit" value="Upload"/></p>
+    </form>
     
-    </tal:main-macro>
+  </tal:main-macro>
 </metal:main>
 
 </body>

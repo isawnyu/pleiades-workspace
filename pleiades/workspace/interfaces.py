@@ -14,6 +14,8 @@ class IWorkspaceCollection(Interface):
 
     contains('pleiades.workspace.interfaces.IWorkspaceCollection')
 
+    members = Attribute("""Iterator over members of the collection.""")
+
 
 class IWorkspace(Interface):
     """A container

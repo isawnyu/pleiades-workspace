@@ -1,5 +1,10 @@
-table {
+div.ws-dashboard {
+  border: solid orange 1px;
+  padding: 1em;
+  }
+
+table.ws-dashboard {
   text-align: left;
   border-spacing: 1em;
-}
+  }
 

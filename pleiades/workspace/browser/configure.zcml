@@ -15,7 +15,12 @@
     name="workspace_icon.gif"
     image="workspace_icon.gif"
     />
-        
+
+  <browser:resource
+    name="collection_icon.gif"
+    image="collection_icon.gif"
+    />
+
   <browser:page
     for="..interfaces.IWorkspace"
     name="view"
@@ -59,18 +64,18 @@
     permission="cmf.AddPortalContent"
     />
 
-  <!--browser:page
-    for="..interfaces.IWorkspace"
-    name="import-xml-form"
-    class=".xml.XMLImportForm"
-    permission="zope2.View"
-    /-->
+  <browser:page
+    for="..interfaces.IWorkspaceCollection"
+    name="manage-collection-form"
+    class=".manage.ManageCollectionForm"
+    permission="cmf.ModifyPortalContent"
+    />
 
   <browser:page
-    for="Products.PleiadesEntity.content.interfaces.IName"
-    name="manage-workspaces"
-    class=".manage.ManageWorkspaces"
-    permission="cmf.AddPortalContent"
+    for="..interfaces.IWorkspaceCollection"
+    name="manage-collection"
+    class=".manage.ManageCollection"
+    permission="cmf.ModifyPortalContent"
     />
 
 </configure>

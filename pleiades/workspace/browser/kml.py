@@ -66,7 +66,14 @@ class KMLImporter(BrowserView):
             raise
 
         transaction.commit()
-        return "Success"
+        
+        # Redirect to the workspace
+        response.setStatus(201)
+        response.setHeader(
+            'Location', 
+            '%s/drafting' % self.context.absolute_url()
+            )
+        response.redirect('%s/drafting' % self.context.absolute_url())
 
 
 class KMLImportForm(BrowserView):
