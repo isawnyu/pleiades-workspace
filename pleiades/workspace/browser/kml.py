@@ -35,8 +35,7 @@ class KMLImporter(BrowserView):
                 where = f.geometry
                 lid = locations.invokeFactory(
                         'Location',
-                        geometryType=where.type,
-                        spatialCoordinates='%f %f' % (where.coordinates[1], where.coordinates[0])
+                        geometry='%s: %s' % (where.type, where.coordinates),
                         )
                 nid = names.invokeFactory(
                         'Name',

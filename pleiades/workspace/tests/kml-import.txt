@@ -71,3 +71,9 @@ Verify import
     True
     >>> len(list(ws['locations'].queryCatalog()))
     11
+
+Verify location
+
+    >>> loc = ws['locations'].queryCatalog()[0].getObject()
+    >>> loc.getGeometry()
+    'Point: (21.9725, 32.896299999999997, 0.0)'
