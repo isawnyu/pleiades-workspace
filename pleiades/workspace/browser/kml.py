@@ -4,6 +4,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from elementtree import ElementTree as etree
 import keytree
+import geojson
 from pleiades.workspace.interfaces import IResource
 
 
@@ -32,11 +33,18 @@ class KMLImporter(BrowserView):
                 f = keytree.feature(pm_element)
                 name = f.properties['name']
                 description = f.properties['description']
-                where = f.geometry
-                lid = locations.invokeFactory(
-                        'Location',
-                        geometry='%s: %s' % (where.type, where.coordinates),
-                        )
+
+                # Process a geo-interface provider into strict GeoJSON
+                # shorthand.
+                where = geojson.GeoJSON.to_instance(dict(
+                            type=f.geometry.type,
+                            coordinates=f.geometry.coordinates
+                            ))
+                data = geojson.loads(geojson.dumps(where))
+                geometry = '%s:%s' % (str(data['type']), data['coordinates'])
+                
+                lid = locations.invokeFactory('Location', geometry=geometry)
+                
                 nid = names.invokeFactory(
                         'Name',
                         title=name.encode('utf-8')
