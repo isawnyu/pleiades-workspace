@@ -25,6 +25,7 @@ class XMLImporter(BrowserView):
         locations = portal['locations']
         failures = []
         count = 0
+        log = portal.getLogger("pleiades.entity")
         for xml in glob.glob("%s/*.xml" % sourcedir):
             try:
                 result = load_place(portal, xml)
@@ -37,6 +38,7 @@ class XMLImporter(BrowserView):
                 self.context.attach(places[result['place_id']])
                 count += 1
             except Exception, e:
+                log.error("Failed to load %s", xml, exc_info=1)
                 failures.append([basename(xml), str(e)])
     
         if len(failures) == 0:
