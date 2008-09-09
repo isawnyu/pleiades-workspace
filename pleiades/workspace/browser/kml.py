@@ -47,7 +47,7 @@ class KMLImporter(BrowserView):
                 
                 nid = names.invokeFactory(
                         'Name',
-                        title=name.encode('utf-8')
+                        nameTransliterated=name.encode('utf-8')
                         )
                 pid = places.invokeFactory(
                         'Place',
