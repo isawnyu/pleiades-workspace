@@ -89,3 +89,11 @@ Test Deletion
     0
     >>> len(list(self.portal['locations'].keys()))
     0
+    >>> browser.open('%s/places/@@manage-collection-form' % ws_url)
+    >>> deletion = browser.getControl(name='deletion')
+    >>> deletion.value = ['true']
+    >>> browser.getControl(name='submit-delete').click()
+    >>> len(list(ws['places'].queryCatalog()))
+    0
+    >>> len(list(self.portal['places'].keys()))
+    0
