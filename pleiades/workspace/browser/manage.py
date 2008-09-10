@@ -33,6 +33,45 @@ class ManageCollection(BrowserView):
         response.redirect('%s/%s' % (workspace.absolute_url(), new_state))
 
 
+class DeleteCollection(BrowserView):
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        response = request.response
+        deletion = self.request.form.get('deletion', None)
+        if deletion is not None:
+            ptool = getToolByName(self.context, 'portal_url')
+            portal = ptool.getPortalObject()
+            metadata = self.context.queryCatalog
+            import transaction
+            savepoint = transaction.savepoint()
+            try:
+                lids = [b.getId for b in metadata() if b.Type == 'Location']
+                nids = [b.getId for b in metadata() if b.Type == 'Name']
+                fids = [b.getId for b in metadata() if b.Type == 'Features']
+                pids = [b.getId for b in metadata() if b.Type == 'Places']
+                portal['locations'].manage_delObjects(lids)
+                portal['names'].manage_delObjects(nids)
+                portal['features'].manage_delObjects(fids)
+                portal['places'].manage_delObjects(pids)
+            except:
+                savepoint.rollback()
+                raise
+            transaction.commit()
+            
+        # acquire the parent workspace
+        workspace = None
+        child = aq_inner(self.context)
+        while 1:
+            ob = aq_parent(child)
+            if IWorkspace.providedBy(ob):
+                workspace = ob
+                break
+            child = ob
+        response.redirect('%s' % workspace.absolute_url())
+
+
 class ManageCollectionForm(BrowserView):
 
     __call__ = ViewPageTemplateFile('manage_collection_form.pt')
@@ -44,6 +83,9 @@ class ManageCollectionForm(BrowserView):
     @memoize
     def transitions(self):
         wftool = getToolByName(self.context, 'portal_workflow')
-        member = self.context.queryCatalog()[0].getObject()
+        metadata = self.context.queryCatalog()
+        if len(metadata) == 0:
+            return []
+        member = metadata[0].getObject()
         transitions = wftool.getTransitionsFor(member)
         return transitions

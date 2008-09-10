@@ -1,5 +1,6 @@
 import glob
 from os.path import basename
+import logging
 from elementtree import ElementTree as etree
 import transaction
 from Products.Five.browser import BrowserView
@@ -25,7 +26,7 @@ class XMLImporter(BrowserView):
         locations = portal['locations']
         failures = []
         count = 0
-        log = portal.getLogger("pleiades.entity")
+        log = logging.getLogger("pleiades.entity")
         for xml in glob.glob("%s/*.xml" % sourcedir):
             try:
                 result = load_place(portal, xml)

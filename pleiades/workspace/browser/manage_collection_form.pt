@@ -45,6 +45,21 @@
   </ul>
   </tal:links>
 
+  <h3 class="documentFirstHeading">Member Deletion</h3>
+
+  <p>All members of this collection may be deleted using the form below.</p>
+
+  <form
+    action="@@delete-collection" 
+    enctype="multipart/form-data" 
+    method="post"
+    >
+    <p>
+      <input type="radio" name="deletion" value="true"/> Delete
+    </p>
+    <p><input name="submit-delete" type="submit" value="Apply"/></p>
+  </form>
+
 </tal:main-macro>
 </metal:main>
 

@@ -78,4 +78,11 @@
     permission="cmf.ModifyPortalContent"
     />
 
+  <browser:page
+    for="..interfaces.IWorkspaceCollection"
+    name="delete-collection"
+    class=".manage.DeleteCollection"
+    permission="cmf.ModifyPortalContent"
+    />
+
 </configure>

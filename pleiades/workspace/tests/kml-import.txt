@@ -76,4 +76,16 @@ Verify location
 
     >>> loc = ws['locations'].queryCatalog()[0].getObject()
     >>> loc.getGeometry()
-    'Point:[21.9725, 32.896299999999997, 0.0]'
+    'Point:[2..., 3...]'
+
+Test Deletion
+-------------
+
+    >>> browser.open('%s/locations/@@manage-collection-form' % ws_url)
+    >>> deletion = browser.getControl(name='deletion')
+    >>> deletion.value = ['true']
+    >>> browser.getControl(name='submit-delete').click()
+    >>> len(list(ws['locations'].queryCatalog()))
+    0
+    >>> len(list(self.portal['locations'].keys()))
+    0
