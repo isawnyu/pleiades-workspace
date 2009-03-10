@@ -7,6 +7,8 @@ from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
 
 ztc.installProduct('ATVocabularyManager')
+ztc.installProduct('Products.ATBackRef')
+ztc.installProduct('Products.CompoundField')
 ztc.installProduct('PleiadesEntity')
 
 @onsetup
@@ -36,7 +38,7 @@ def setup_pleiades_workspace():
 # PloneTestCase set up this product on installation.
 
 setup_pleiades_workspace()
-ptc.setupPloneSite(products=['ATVocabularyManager', 'PleiadesEntity', 'pleiades.workspace'])
+ptc.setupPloneSite(products=['ATVocabularyManager', 'ATBackRef', 'CompoundField', 'PleiadesEntity', 'pleiades.workspace'])
 
 class WorkspaceTestCase(ptc.PloneTestCase):
     """Base class used for test cases
@@ -46,8 +48,9 @@ class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
     """Test case class used for functional (doc-)tests
     """
 
-    def afterSetUp(test):
-        pt = test.portal.portal_types
+    def afterSetUp(self):
+        
+        pt = self.portal.portal_types
         wf = pt['Workspace Folder']
         wf_allow = wf.global_allow
         wf.global_allow = True
@@ -59,12 +62,16 @@ class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
         n = pt['Name']
         n_allow = n.global_allow
         n.global_allow = True
-
+        
+        self.setRoles(('Manager', 'Contributor'))        
+        
         try:
-            test.setRoles(('Manager', 'Contributor'))
-            test.portal.invokeFactory('NameContainer', id='names')
-            test.portal.invokeFactory('LocationContainer', id='locations')
-            test.portal.invokeFactory('FeatureContainer', id='features')
-            test.portal.invokeFactory('PlaceContainer', id='places')
+            self.portal.invokeFactory('FeatureContainer', id='features')
+            self.portal['features'].invokeFactory('Folder', id='metadata')
+            self.portal.invokeFactory('PlaceContainer', id='places')
+            self.portal.invokeFactory('ReferenceContainer', id='references')
+            mid = self.portal['features']['metadata'].invokeFactory('PositionalAccuracy', id='cap-map65')
+            self.portal['features']['metadata'][mid].setValue(0.01)
+            self.portal['features']['metadata'][mid].setText("That's right, 1 cm!")
         except:
             raise

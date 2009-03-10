@@ -5,8 +5,6 @@ Setup
 
     >>> self.setRoles(('Manager', 'Contributor'))
     >>> folder = self.folder
-    >>> names = self.portal['names']
-    >>> locations = self.portal['locations']
     >>> features = self.portal['features']
     >>> places = self.portal['places']
 
@@ -15,64 +13,42 @@ Make a workspace
     >>> oid = self.folder.invokeFactory('Workspace Folder', id='workspaces', title='Workspaces')
     >>> spaces = self.folder[oid]
     >>> wsid = spaces.invokeFactory('Workspace', id='test-ws', title='Testing')
-    >>> ws = spaces[wsid]
     >>> from zope.event import notify
     >>> from Products.Archetypes.event import ObjectInitializedEvent
-    >>> notify(ObjectInitializedEvent(ws))
-
+    >>> notify(ObjectInitializedEvent(spaces[wsid]))
+    
 Create some test entities
 
-    >>> nid = names.invokeFactory('Name', title='Civitas Non', nameTransliterated='Civitas Non', nameAttested='Civitas Non', nameLanguage='la', nameType='geographic')
-    >>> lid = locations.invokeFactory('Location')
-    >>> pid = places.invokeFactory('Place')
-    >>> fid = features.invokeFactory('Feature')
-
+    >>> pid = places.invokeFactory('Place', '0', title='Test')
+    >>> fid = features.invokeFactory('Feature', '0', title='Test')
+    >>> notify(ObjectInitializedEvent(places[pid]))
+    >>> notify(ObjectInitializedEvent(features[fid]))
+        
 Attach a workspace to them
 
+    >>> ws = spaces[wsid]
     >>> from pleiades.workspace.interfaces import IResource
-    >>> ws.attach(names[nid])
-    >>> ws.attach(locations[lid])
     >>> ws.attach(features[fid])
     >>> ws.attach(places[pid])
     >>> wsuid = ws.UID()
-    >>> IResource(names[nid]).wsuids == [wsuid]
-    True
-    >>> IResource(locations[lid]).wsuids == [wsuid]
-    True
     >>> IResource(features[fid]).wsuids == [wsuid]
     True
     >>> IResource(places[pid]).wsuids == [wsuid]
     True
-
+    
 See the content appear in the workspace collections
 
-    >>> brains = ws.locations.queryCatalog()
-    >>> brains[0].id == lid
-    True
-    >>> brains = ws.names.queryCatalog()
-    >>> brains[0].id == nid
-    True
-    >>> brains = ws.places.queryCatalog()
-    >>> brains[0].id == pid
+    >>> brains = ws.features.queryCatalog()
+    >>> brains[0].id == fid
     True
 
 Detach
 
-    >>> ws.detach(names[nid])
-    >>> ws.detach(locations[lid])
     >>> ws.detach(features[fid])
     >>> ws.detach(places[pid])
-    >>> IResource(names[nid]).wsuids == []
-    True
-    >>> IResource(locations[lid]).wsuids == []
-    True
     >>> IResource(features[fid]).wsuids == []
     True
     >>> IResource(places[pid]).wsuids == []
-    True
-    >>> list(ws.locations.queryCatalog()) == []
-    True
-    >>> list(ws.names.queryCatalog()) == []
     True
     >>> list(ws.features.queryCatalog()) == []
     True

@@ -15,7 +15,7 @@ class WorkspaceView(BrowserView):
     @memoize
     def collections_data(self):
         data = {}
-        for name in ['locations', 'names', 'features', 'places']:
+        for name in ['features', 'places']:
             row = {}
             for state in ['drafting', 'pending', 'published']:
                 collection = self.context[name][state]

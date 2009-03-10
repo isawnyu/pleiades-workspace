@@ -22,20 +22,13 @@ class XMLImporter(BrowserView):
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
         places = portal['places']
         features = portal['features']
-        names = portal['names']
-        locations = portal['locations']
         failures = []
         count = 0
         log = logging.getLogger("pleiades.entity")
         for xml in glob.glob("%s/*.xml" % sourcedir):
             try:
                 result = load_place(portal, xml)
-                for nid in result['name_ids']:
-                    self.context.attach(names[nid])
-                for lid in result['location_ids']:
-                    self.context.attach(locations[lid])
-                for fid in result['feature_ids']:
-                    self.context.attach(features[fid])
+                self.context.attach(features[result['feature_id']])
                 self.context.attach(places[result['place_id']])
                 count += 1
             except Exception, e:

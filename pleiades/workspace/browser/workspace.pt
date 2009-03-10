@@ -43,7 +43,7 @@
               <th>Published</th>
               <th>All</th>
             </tr>
-            <tr tal:repeat="tname python:['locations', 'names', 'features', 'places']">
+            <tr tal:repeat="tname python:['features', 'places']">
               <tal:row tal:define="row python:view.collections_data()[tname]">
               <th tal:content="python:tname.capitalize()">NAME</th>
               <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published', 'all')]">

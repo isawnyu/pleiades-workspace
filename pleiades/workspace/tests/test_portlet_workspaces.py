@@ -59,7 +59,7 @@ class TestRenderer(WorkspaceFunctionalTestCase):
         WorkspaceFunctionalTestCase.afterSetUp(self)
         self.portal.invokeFactory('Workspace Folder', 'workspaces')
         self.portal['workspaces'].invokeFactory('Workspace', 'ws1')
-        pid = self.portal['places'].invokeFactory('Place')
+        pid = self.portal['places'].invokeFactory('Place', '0', title='Test')
         self.place = self.portal['places'][pid]
         self.workspace = self.portal['workspaces']['ws1']
         self.workspace.attach(self.place)

@@ -47,12 +47,8 @@ class DeleteCollection(BrowserView):
             import transaction
             savepoint = transaction.savepoint()
             try:
-                lids = [b.getId for b in metadata() if b.Type == 'Location']
-                nids = [b.getId for b in metadata() if b.Type == 'Name']
                 fids = [b.getId for b in metadata() if b.Type == 'Feature']
                 pids = [b.getId for b in metadata() if b.Type == 'Place']
-                portal['locations'].manage_delObjects(lids)
-                portal['names'].manage_delObjects(nids)
                 portal['features'].manage_delObjects(fids)
                 portal['places'].manage_delObjects(pids)
             except:

@@ -30,7 +30,7 @@ from pleiades.workspace.config import PROJECTNAME
 from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 
 from Products.PleiadesEntity.content.PlaceContainer import PlaceContainer
-from Products.PleiadesEntity.content.LocationContainer import LocationContainer
+
 
 # This is the Archetypes schema, defining fields and widgets. We extend
 # the one from ATContentType's ATFolder with our additional fields.

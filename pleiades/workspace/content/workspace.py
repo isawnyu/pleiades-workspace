@@ -19,7 +19,6 @@ from pleiades.workspace.config import PROJECTNAME
 from pleiades.workspace.i18n import WorkspaceMessageFactory as _
 
 from Products.PleiadesEntity.content.PlaceContainer import PlaceContainer
-from Products.PleiadesEntity.content.LocationContainer import LocationContainer
 
 from pleiades.workspace.interfaces import IResource, IWorkspace, IWorkspaceCollection
 from pleiades.workspace.event import ResourceModifiedEvent
@@ -112,48 +111,47 @@ atapi.registerType(Workspace, PROJECTNAME)
 atapi.registerType(WorkspaceCollection, PROJECTNAME)
 
 
-def initTypeTopic(topic, type, uid, acquire=True):
+def initTypeTopic(topic, portal_type, wsuid, acquire=True):
     topic.setAcquireCriteria(acquire)
     c = topic.addCriterion('pleiades_wsuids', 'ATSimpleStringCriterion')
-    c.setValue(uid)
-    c = topic.addCriterion('Type', 'ATPortalTypeCriterion')
-    c.setValue(type)
+    c.setValue(wsuid)
+    c = topic.addCriterion('portal_type', 'ATPortalTypeCriterion')
+    c.setValue(portal_type)
 
-def initStateTopic(topic, state, uid, acquire=True):
+def initStateTopic(topic, state, wsuid, acquire=True):
     topic.setAcquireCriteria(acquire)
     c = topic.addCriterion('pleiades_wsuids', 'ATSimpleStringCriterion')
-    c.setValue(uid)
+    c.setValue(wsuid)
     c = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
     c.setValue(state)
 
 @adapter(IWorkspace, IObjectInitializedEvent)
 def add_workspace_collections(ob, event):
-    types = [('locations', 'Location'),
-             ('names', 'Name'),
-             ('features', 'Feature'),
+    types = [('features', 'Feature'),
              ('places', 'Place')]
     states = ['drafting', 'pending', 'published']
+    wsuid = ob.UID()
     for name, tname in types:
         tid = ob.invokeFactory(
                 'Workspace Collection', id=name, title=name.capitalize()
                 )
         topic = ob[tid]
-        initTypeTopic(topic, tname, ob.UID())
+        initTypeTopic(topic, tname, wsuid)
         for s in states:
             sid = topic.invokeFactory(
                     'Workspace Collection', id=s, title=s.capitalize()
                     )
             subtopic = topic[sid]
-            initStateTopic(subtopic, sid, ob.UID(), True)
+            initStateTopic(subtopic, sid, wsuid, True)
     for s in states:
         sid = ob.invokeFactory(
                 'Workspace Collection', id=s, title=s.capitalize()
                 )
         topic = ob[sid]
-        initStateTopic(topic, s, ob.UID())
+        initStateTopic(topic, s, wsuid)
         for name, tname in types:
             tid = topic.invokeFactory(
                     'Workspace Collection', id=name, title=name.capitalize()
                     )
             subtopic = topic[tid]
-            initTypeTopic(subtopic, tname, ob.UID(), True)
+            initTypeTopic(subtopic, tname, wsuid, True)

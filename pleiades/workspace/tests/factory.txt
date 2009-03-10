@@ -25,10 +25,6 @@ Make a workspace folder and workspace
     True
     >>> 'features' in ws.objectIds()
     True
-    >>> 'locations' in ws.objectIds()
-    True
-    >>> 'names' in ws.objectIds()
-    True
     >>> 'drafting' in ws.objectIds()
     True
     >>> 'drafting' in ws['places'].objectIds()

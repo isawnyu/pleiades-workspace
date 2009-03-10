@@ -19,10 +19,6 @@ Setup workspace
     True
     >>> 'features' in ws.objectIds()
     True
-    >>> 'locations' in ws.objectIds()
-    True
-    >>> 'names' in ws.objectIds()
-    True
     >>> ws_url = ws.absolute_url()
 
 Config the test browser
@@ -64,9 +60,9 @@ Upload
 
 Verify import
 
-    >>> len(list(ws['locations'].queryCatalog()))
-    264
     >>> len(list(ws['places'].queryCatalog()))
-    315
-    >>> 'Aloanda' in [o.Title for o in ws['names'].queryCatalog()]
+    317
+    >>> len(list(ws['features'].queryCatalog()))
+    317    
+    >>> 'Aloanda' in [o.Title for o in ws['features'].queryCatalog()]
     True

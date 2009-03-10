@@ -17,18 +17,6 @@
 
   <adapter
     factory=".resource.Resource"
-    for="Products.PleiadesEntity.content.Location.Location"
-    trusted="true"
-    />
-
-  <adapter
-    factory=".resource.Resource"
-    for="Products.PleiadesEntity.content.Name.Name"
-    trusted="true"
-    />
-
-  <adapter
-    factory=".resource.Resource"
     for="Products.PleiadesEntity.content.Feature.Feature"
     trusted="true"
     />

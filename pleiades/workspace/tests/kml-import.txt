@@ -19,10 +19,6 @@ Setup workspace
     True
     >>> 'features' in ws.objectIds()
     True
-    >>> 'locations' in ws.objectIds()
-    True
-    >>> 'names' in ws.objectIds()
-    True
     >>> ws_url = ws.absolute_url()
 
 Config the test browser
@@ -65,30 +61,23 @@ Upload
 
 Verify import
 
-    >>> 'Apollonia/Sozousa/Portus Cyrenorum' in [o.Title for o in ws['names'].queryCatalog()]
-    True
     >>> 'Ptolemais/Barkes Limen' in [o.Title for o in ws['features'].queryCatalog()]
     True
-    >>> len(list(ws['locations'].queryCatalog()))
+    >>> len(list(ws['features'].queryCatalog()))
     11
 
-Verify location
-
-    >>> loc = ws['locations'].queryCatalog()[0].getObject()
-    >>> loc.getGeometry()
-    'Point:[2..., 3...]'
 
 Test Deletion
 -------------
 
-    >>> browser.open('%s/locations/@@manage-collection-form' % ws_url)
+    >>> browser.open('%s/features/@@manage-collection-form' % ws_url)
     >>> deletion = browser.getControl(name='deletion')
     >>> deletion.value = ['true']
     >>> browser.getControl(name='submit-delete').click()
-    >>> len(list(ws['locations'].queryCatalog()))
+    >>> len(list(ws['features'].queryCatalog()))
     0
-    >>> len(list(self.portal['locations'].keys()))
-    0
+    >>> len(list(self.portal['features'].keys()))
+    1
     >>> browser.open('%s/places/@@manage-collection-form' % ws_url)
     >>> deletion = browser.getControl(name='deletion')
     >>> deletion.value = ['true']

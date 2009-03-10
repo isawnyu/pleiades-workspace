@@ -22,9 +22,7 @@ class KMLImporter(BrowserView):
 
         places = portal['places']
         features = portal['features']
-        names = portal['names']
-        locations = portal['locations']
-        
+                
         savepoint = transaction.savepoint()
         try:
             k = etree.fromstring(request.file.read())
@@ -42,32 +40,22 @@ class KMLImporter(BrowserView):
                             ))
                 data = geojson.loads(geojson.dumps(where))
                 geometry = '%s:%s' % (str(data['type']), data['coordinates'])
-                
-                lid = locations.invokeFactory('Location', geometry=geometry)
-                
-                nid = names.invokeFactory(
-                        'Name',
-                        nameTransliterated=name.encode('utf-8')
-                        )
-                pid = places.invokeFactory(
-                        'Place',
-                        title=name.encode('utf-8')
-                        )
                 fid = features.invokeFactory(
                         'Feature',
+                        features.generateId(prefix=''),
+                        title=name.encode('utf-8'),
                         )
                 f = features[fid]
-                f.addReference(names[nid], 'hasName')
-                f.addReference(locations[lid], 'hasLocation')
-                p = places[pid]
-                p.addReference(f, 'hasFeature')
+                lid = f.invokeFactory('Location', 'position', title='Position', geometry=geometry)
+                transliteration = name.encode('utf-8')
+                nid = f.invokeFactory(
+                        'Name',
+                        ptool.normalizeString(transliteration),
+                        nameTransliterated=transliteration
+                        )
 
                 # Attach to workspace
-                self.context.attach(names[nid])
-                self.context.attach(locations[lid])
-                self.context.attach(f)
-                self.context.attach(p)
-               
+                self.context.attach(f)               
         except:
             savepoint.rollback()
             raise
