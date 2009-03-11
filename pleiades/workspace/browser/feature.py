@@ -54,7 +54,7 @@ class NamedFactory(object):
             'Place': portal['places'],
             'Feature': portal['features']
             }
-        oid = containers[portal_type].invokeFactory(portal_type, '0', title=title)
+        oid = containers[portal_type].invokeFactory(portal_type, containers[portal_type].generateId(prefix=''), title=title)
         ob = containers[portal_type][oid]
         self.context.attach(ob)
         return (oid, ob.absolute_url())
