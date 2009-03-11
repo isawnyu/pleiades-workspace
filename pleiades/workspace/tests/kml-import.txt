@@ -55,9 +55,9 @@ Upload
     >>> browser.open('%s/import-kml-form' % ws_url)
     >>> import os
     >>> file_path = '%s/src/pleiades.workspace/pleiades/workspace/tests/archaic.kml' % os.getcwd()
-    >>> file_control = browser.getControl(name='file').mech_control
+    >>> file_control = browser.getControl(name='form.widgets.file').mech_control
     >>> file_control.add_file(open(file_path, 'rb'), filename='archaic.kml')
-    >>> browser.getControl(name='submit').click()
+    >>> browser.getControl(name='form.buttons.apply').click()
 
 Verify import
 

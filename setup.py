@@ -26,6 +26,7 @@ setup(name='pleiades.workspace',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.app.z3cform'
           # -*- Extra requirements: -*-
       ],
       entry_points="""

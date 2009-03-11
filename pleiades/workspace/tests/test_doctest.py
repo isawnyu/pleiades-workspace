@@ -6,8 +6,8 @@ from Testing import ZopeTestCase as ztc
 from pleiades.workspace.tests import base
 
 optionflags = (
-    doctest.REPORT_ONLY_FIRST_FAILURE | 
-    doctest.NORMALIZE_WHITESPACE | 
+    doctest.REPORT_ONLY_FIRST_FAILURE |
+    doctest.NORMALIZE_WHITESPACE |
     doctest.ELLIPSIS
     )
 
@@ -33,6 +33,12 @@ def test_suite():
             ),
         ztc.ZopeDocFileSuite(
             'xml-import.txt',
+            package='pleiades.workspace.tests',
+            test_class=base.WorkspaceFunctionalTestCase,
+            optionflags=optionflags
+            ),
+        ztc.ZopeDocFileSuite(
+            'add-feature.txt',
             package='pleiades.workspace.tests',
             test_class=base.WorkspaceFunctionalTestCase,
             optionflags=optionflags

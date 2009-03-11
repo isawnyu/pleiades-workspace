@@ -62,8 +62,12 @@
         </div>
 
         <h3>Importing Data</h3>
-        <p>New data can be created by <a href="@@import-kml-form">posting a KML file</a> or by <a href="@@import-xml-form">importing a Pleiades XML file</a>.</p>
-
+        <p>New data can be created in this workspace's context in several ways:</p>
+        <ul>
+            <li><a href="@@import-kml-form">By posting a KML file</a></li>
+            <li><a href="@@import-xml-form">By importing a directory of Pleiades XML files</a></li>
+            <li><a href="@@add-named-form">By creating a single ancient place or feature</a></li>
+        </ul>
         <div metal:use-macro="context/document_relateditems/macros/relatedItems">
             show related items if they exist
         </div>

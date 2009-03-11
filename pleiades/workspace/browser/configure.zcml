@@ -5,6 +5,7 @@
   >
 
   <include package="plone.app.contentmenu" />
+  <include package="plone.app.z3cform" />
 
   <browser:resource
     name="pleiades-workspace.css"
@@ -40,30 +41,23 @@
     for="..interfaces.IWorkspace"
     name="import-kml-form"
     class=".kml.KMLImportForm"
-    permission="zope2.View"
-    />
-
-  <browser:page
-    for="..interfaces.IWorkspace"
-    name="import-kml"
-    class=".kml.KMLImporter"
-    permission="cmf.AddPortalContent"
+    permission="cmf.ModifyPortalContent"
     />
 
   <browser:page
     for="..interfaces.IWorkspace"
     name="import-xml-form"
     class=".xml.XMLImportForm"
-    permission="zope2.View"
+    permission="cmf.ModifyPortalContent"
     />
 
   <browser:page
     for="..interfaces.IWorkspace"
-    name="import-xml"
-    class=".xml.XMLImporter"
-    permission="cmf.AddPortalContent"
+    name="add-named-form"
+    class=".feature.AddNamedForm"
+    permission="cmf.ModifyPortalContent"
     />
-
+    
   <browser:page
     for="..interfaces.IWorkspaceCollection"
     name="manage-collection-form"

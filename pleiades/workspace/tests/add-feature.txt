@@ -3,7 +3,7 @@ KML File upload and import
 
 Setup workspace
 ---------------
-
+    
     >>> self.setRoles(('Manager', 'Contributor'))
     >>> folder = self.folder
     >>> from Products.CMFCore.utils import getToolByName
@@ -23,11 +23,11 @@ Setup workspace
 
 Config the test browser
 -----------------------
-
+    
     >>> from Products.Five.testbrowser import Browser
     >>> browser = Browser()
     >>> portal_url = self.portal.absolute_url()
-
+    
     >>> browser.handleErrors = False
     >>> self.portal.error_log._ignored_exceptions = ()
     >>> from zope.component import getUtility, getMultiAdapter
@@ -37,32 +37,46 @@ Config the test browser
     >>> left_assignable = getMultiAdapter((self.portal, left_column), IPortletAssignmentMapping)
     >>> for name in left_assignable.keys():
     ...     del left_assignable[name]
-
+    
     >>> right_column = getUtility(IPortletManager, name=u"plone.rightcolumn")
     >>> right_assignable = getMultiAdapter((self.portal, right_column), IPortletAssignmentMapping)
     >>> for name in right_assignable.keys():
     ...     del right_assignable[name]
-
+    
     >>> from Products.PloneTestCase.setup import portal_owner, default_password
     >>> browser.open(portal_url + '/login_form?came_from=' + portal_url)
     >>> browser.getControl(name='__ac_name').value = portal_owner
     >>> browser.getControl(name='__ac_password').value = default_password
     >>> browser.getControl(name='submit').click()
 
-Upload
-------
-
-    >>> browser.open('%s/import-xml-form' % ws_url)
+Adding a feature
+----------------
+    
+    >>> browser.open('%s/add-named-form' % ws_url)
     >>> import os
-    >>> path = '%s/src/pleiades.workspace/pleiades/workspace/tests/ba065' % os.getcwd()
-    >>> browser.getControl(name='form.widgets.directory').value = path
+    >>> browser.getControl(name='form.widgets.title').value = 'Foo'
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Feature']
     >>> browser.getControl(name='form.buttons.apply').click()
 
 Verify import
-
-    >>> len(list(ws['places'].queryCatalog()))
-    317
-    >>> len(list(ws['features'].queryCatalog()))
-    317    
-    >>> 'Aloanda' in [o.Title for o in ws['features'].queryCatalog()]
+    
+    >>> 'Foo' in [o.Title for o in ws['features'].queryCatalog()]
     True
+    >>> len(list(ws['features'].queryCatalog()))
+    1
+
+Adding a place
+--------------
+    
+    >>> browser.open('%s/add-named-form' % ws_url)
+    >>> import os
+    >>> browser.getControl(name='form.widgets.title').value = 'Foo'
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Place']
+    >>> browser.getControl(name='form.buttons.apply').click()
+
+Verify import
+    
+    >>> 'Foo' in [o.Title for o in ws['places'].queryCatalog()]
+    True
+    >>> len(list(ws['places'].queryCatalog()))
+    1
