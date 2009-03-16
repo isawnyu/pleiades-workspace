@@ -11,34 +11,18 @@ ztc.installProduct('Products.ATBackRef')
 ztc.installProduct('Products.CompoundField')
 ztc.installProduct('PleiadesEntity')
 
+
 @onsetup
 def setup_pleiades_workspace():
-    """Set up the additional products required for the Optilux Cinema Content.
-    
-    The @onsetup decorator causes the execution of this body to be deferred
-    until the setup of the Plone site testing layer.
-    """
-    
-    # Load the ZCML configuration for the optilux.policy package.
-    # This includes the other products below as well.
-    
     fiveconfigure.debug_mode = True
     import pleiades.workspace
     zcml.load_config('configure.zcml', pleiades.workspace)
     fiveconfigure.debug_mode = False
-    
-    # We need to tell the testing framework that these products
-    # should be available. This can't happen until after we have loaded
-    # the ZCML.
-    
     ztc.installPackage('pleiades.workspace')
     
-# The order here is important: We first call the (deferred) function which
-# installs the products we need for the Optilux package. Then, we let 
-# PloneTestCase set up this product on installation.
-
 setup_pleiades_workspace()
-ptc.setupPloneSite(products=['ATVocabularyManager', 'ATBackRef', 'CompoundField', 'PleiadesEntity', 'pleiades.workspace'])
+ptc.setupPloneSite(products=['ATVocabularyManager', 'Products.ATBackRef', 'Products.CompoundField', 'PleiadesEntity', 'pleiades.workspace'])
+
 
 class WorkspaceTestCase(ptc.PloneTestCase):
     """Base class used for test cases
@@ -59,10 +43,6 @@ class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
         lpf_allow = lpf.global_allow
         lpf.global_allow = True
 
-        n = pt['Name']
-        n_allow = n.global_allow
-        n.global_allow = True
-        
         self.setRoles(('Manager', 'Contributor'))        
         
         try:
@@ -75,3 +55,65 @@ class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
             self.portal['features']['metadata'][mid].setText("That's right, 1 cm!")
         except:
             raise
+
+
+class ContentFunctionalTestCase(ptc.FunctionalTestCase):
+
+    def afterSetUp(test):
+        test.setRoles(('Manager',))
+        pt = test.portal.portal_types
+        for type in [
+            'Topic', 
+            'PlaceContainer', 
+            'FeatureContainer',
+            'Workspace Folder',
+            'Workspace',
+            'Workspace Collection',
+            'Place',
+            'Feature',
+            ]:
+            lpf = pt[type]
+            lpf.global_allow = True
+
+        test.portal.invokeFactory(
+            'Workspace Folder', id='workspaces', title='Workspaces'
+            )
+        test.portal.invokeFactory(
+            'PlaceContainer', id='places', title='Places', 
+            description='All Places'
+            )
+        test.portal.invokeFactory(
+            'FeatureContainer', id='features', title='Features'
+            )
+        test.portal['features'].invokeFactory('Folder', id='metadata')            
+        mid = test.portal['features']['metadata'].invokeFactory('PositionalAccuracy', id='cap-map65')
+        test.portal['features']['metadata'][mid].setValue(0.01)
+        test.portal['features']['metadata'][mid].setText("That's right, 1 cm!")
+            
+        test.features = test.portal['features']
+        test.places = test.portal['places']
+        test.workspaces = test.portal['workspaces']
+
+        # Add feature
+    
+        fid = test.features.invokeFactory('Feature', '1', title='Ninoe', featureType='settlement')
+        f = test.features[fid]
+        nameAttested = u'\u039d\u03b9\u03bd\u1f79\u03b7'.encode('utf-8')
+        nid = f.invokeFactory('Name', 'ninoe', nameAttested=nameAttested, nameLanguage='grc', nameType='geographic', accuracy='accurate', completeness='complete')
+        attestations = f[nid].Schema()['attestations']
+        f[nid].update(attestations=[dict(confidence='certain', timePeriod='roman')])
+        lid = f.invokeFactory('Location', 'location', title='Point 1', geometry='Point:[-86.4808333333333, 34.769722222222]')
+
+        # Add place
+    
+        pid = test.places.invokeFactory('Place', '1', title='Ninoe')
+        p = test.places[pid]
+        nid = p.invokeFactory('Name', 'ninoe', nameAttested=nameAttested, nameLanguage='grc', nameType='geographic', accuracy='accurate', completeness='complete')
+        attestations = p[nid].Schema()['attestations']
+        p[nid].update(attestations=[dict(confidence='certain', timePeriod='roman')])
+
+        # And references    
+        f.addReference(p, 'feature_place')
+        
+        f.reindexObject()
+        p.reindexObject()
