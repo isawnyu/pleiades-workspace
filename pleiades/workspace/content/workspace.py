@@ -128,7 +128,8 @@ def initStateTopic(topic, state, wsuid, acquire=True):
 @adapter(IWorkspace, IObjectInitializedEvent)
 def add_workspace_collections(ob, event):
     types = [('features', 'Feature'),
-             ('places', 'Place')]
+             ('places', 'Place'),
+             ('metadata', 'PositionalAccuracy')]
     states = ['drafting', 'pending', 'published']
     wsuid = ob.UID()
     for name, tname in types:

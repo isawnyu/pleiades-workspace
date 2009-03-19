@@ -17,6 +17,12 @@
 
   <adapter
     factory=".resource.Resource"
+    for="Products.PleiadesEntity.content.PositionalAccuracy.PositionalAccuracy"
+    trusted="true"
+    />
+    
+  <adapter
+    factory=".resource.Resource"
     for="Products.PleiadesEntity.content.Feature.Feature"
     trusted="true"
     />

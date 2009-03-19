@@ -1,4 +1,5 @@
 import transaction
+import uuid
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
@@ -18,7 +19,6 @@ class IKMLImport(Interface):
     """KML import interface
     """
     file = schema.Bytes(title=u"KML File", description=u"Select an uncompressed KML file; Its placemarks will be imported as features.", required=True)
-    metadataId = schema.TextLine(title=u"Metadata Id", description=u"Enter the Plone id of a postional accuracy assessment", required=False)
 
 
 class Form(form.Form):
@@ -30,7 +30,7 @@ class Form(form.Form):
     def handleApply(self, action):
         data, errors = self.extractData()
         importer = KMLImporter(self.context, self.request)
-        importer(data['file'], data.get('metadataId'))
+        importer(data['file'])
         response = self.request.response
         response.setStatus(201)
         response.setHeader(
@@ -51,7 +51,7 @@ class KMLImporter(object):
         self.context = context
         self.request = request
     
-    def __call__(self, file, metadataId):
+    def __call__(self, file):
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
         ptool = getToolByName(self.context, 'plone_utils')
         wtool = getToolByName(self.context, 'portal_workflow')
@@ -63,6 +63,14 @@ class KMLImporter(object):
         try:
             k = etree.fromstring(file)
             kmlns = k.tag.split('}')[0][1:]
+            
+            # metadata doc
+            dtitle = getattr(k.find('*/{%s}name' % kmlns), 'text', 'Unnamed KML Document')
+            mdid = features['metadata'].invokeFactory('PositionalAccuracy', str(uuid.uuid4()), title=dtitle, value=100.0, source=file)
+            features['metadata'][mdid].source.filename = dtitle
+            features['metadata'][mdid].source.content_type = 'application/vnd.google-earth.kml+xml'
+            self.context.attach(features['metadata'][mdid])
+            
             for pm_element in k.findall('*/{%s}Placemark' % kmlns):
                 f = keytree.feature(pm_element)
                 name = f.properties['name']
@@ -84,17 +92,15 @@ class KMLImporter(object):
                 f = features[fid]
                 lid = f.invokeFactory('Location', 'position', title='Position', geometry=geometry)
                 
-                # Locations
-                if metadataId is not None:
-                    posAccDoc = portal['features']['metadata'][metadataId]
-                    f[lid].addReference(posAccDoc, 'location_accuracy')
-                
                 transliteration = name.encode('utf-8')
                 nid = f.invokeFactory(
                         'Name',
                         ptool.normalizeString(transliteration),
                         nameTransliterated=transliteration
                         )
+
+                posAccDoc = features['metadata'][mdid]
+                f[lid].addReference(posAccDoc, 'location_accuracy')
                 
                 # Attach to workspace
                 self.context.attach(f)
