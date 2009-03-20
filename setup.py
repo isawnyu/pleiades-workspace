@@ -26,7 +26,6 @@ setup(name='pleiades.workspace',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'lxml',
           'keytree',
           'geojson',
           'plone.app.z3cform'
