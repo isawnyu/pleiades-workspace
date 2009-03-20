@@ -3,7 +3,7 @@ import uuid
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-from elementtree import ElementTree as etree
+from lxml import etree
 import keytree
 import geojson
 from pleiades.workspace.interfaces import IResource
@@ -71,7 +71,8 @@ class KMLImporter(object):
             features['metadata'][mdid].source.content_type = 'application/vnd.google-earth.kml+xml'
             self.context.attach(features['metadata'][mdid])
             
-            for pm_element in k.findall('*/{%s}Placemark' % kmlns):
+            folders = {}
+            for pm_element in k.xpath('//kml:Placemark', namespaces={'kml': kmlns}):
                 f = keytree.feature(pm_element)
                 name = f.properties['name']
                 description = f.properties['description']
@@ -98,12 +99,33 @@ class KMLImporter(object):
                         ptool.normalizeString(transliteration),
                         nameTransliterated=transliteration
                         )
-
+                
                 posAccDoc = features['metadata'][mdid]
                 f[lid].addReference(posAccDoc, 'location_accuracy')
                 
                 # Attach to workspace
                 self.context.attach(f)
+                
+                # Has a place/folder?
+                parent = pm_element.getparent()
+                if parent.tag == "{%s}Folder" % kmlns:
+                    parentid = id(parent)
+                    if parentid in folders:
+                        pid = folders[parentid]
+                    else:
+                        ptitle = getattr(
+                                    parent.find('*/{%s}name' % kmlns),
+                                    'text',
+                                    'Unnamed Place'
+                                    )
+                        pid = places.invokeFactory(
+                                    'Place',
+                                    places.generateId(prefix=''),
+                                    title=ptitle
+                                    )
+                        self.context.attach(places[pid])
+                        folders[parentid] = pid
+                    f.addReference(places[pid], 'feature_place')
         except:
             savepoint.rollback()
             raise
