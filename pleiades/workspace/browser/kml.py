@@ -114,7 +114,7 @@ class KMLImporter(object):
                         pid = folders[parentid]
                     else:
                         ptitle = getattr(
-                                    parent.find('*/{%s}name' % kmlns),
+                                    parent.find('{%s}name' % kmlns),
                                     'text',
                                     'Unnamed Place'
                                     )

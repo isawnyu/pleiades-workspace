@@ -133,6 +133,8 @@ Verify import
     >>> len(ws['metadata'].queryCatalog())
     1
     >>> p = ws['places'].queryCatalog()[0].getObject()
+    >>> p.title
+    u'Rome, city'
     >>> f = ws['features'].queryCatalog()[0].getObject()
     >>> f.getPlaces() == [p]
     True
