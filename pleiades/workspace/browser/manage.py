@@ -16,8 +16,17 @@ class ManageCollection(BrowserView):
         
         members = [b.getObject() for b in self.context.queryCatalog()]
         for ob in members:
-            wftool.doActionFor(ob, action=transition)
-        
+            import transaction
+            savepoint = transaction.savepoint()
+            try: 
+                wftool.doActionFor(ob, action=transition)
+                for item in ob.items():
+                    wftool.doActionFor(item, action=transition)
+            except:
+                savepoint.rollback()
+                raise
+            transaction.commit()
+            
         new_state = wftool.getInfoFor(members[0], 'review_state')
 
         # acquire the parent workspace
