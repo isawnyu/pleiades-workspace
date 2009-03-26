@@ -12,7 +12,7 @@ class IAddNamed(Interface):
     """Feature or Place adding interface
     """
     title = schema.TextLine(title=u"Title", description=u"Enter a title for the feature or place. It may be subsequently changed.", required=True)
-    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Feature', 'Place'], default='Feature')
+    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Feature', 'Place', 'PositionalAccuracy', 'PrimaryReference', 'SecondaryReference'], default='Feature')
 
 
 class Form(form.Form):
@@ -52,7 +52,10 @@ class NamedFactory(object):
         wtool = getToolByName(self.context, 'portal_workflow')
         containers = {
             'Place': portal['places'],
-            'Feature': portal['features']
+            'Feature': portal['features'],
+            'PositionalAccuracy': portal['features']['metadata'],
+            'PrimaryReference': portal['references'],
+            'SecondaryReference': portal['references']
             }
         oid = containers[portal_type].invokeFactory(portal_type, containers[portal_type].generateId(prefix=''), title=title)
         ob = containers[portal_type][oid]

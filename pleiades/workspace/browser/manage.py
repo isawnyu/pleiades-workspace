@@ -20,7 +20,8 @@ class ManageCollection(BrowserView):
             savepoint = transaction.savepoint()
             try: 
                 wftool.doActionFor(ob, action=transition)
-                for item in ob.items():
+                for item in ob.values():
+                    import pdb; pdb.set_trace()
                     wftool.doActionFor(item, action=transition)
             except:
                 savepoint.rollback()

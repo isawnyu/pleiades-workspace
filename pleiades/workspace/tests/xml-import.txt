@@ -64,5 +64,5 @@ Verify import
     317
     >>> len(list(ws['features'].queryCatalog()))
     317    
-    >>> 'Aloanda' in [o.Title for o in ws['features'].queryCatalog()]
+    >>> '...Aloanda' in [o.Title for o in ws['features'].queryCatalog()]
     True

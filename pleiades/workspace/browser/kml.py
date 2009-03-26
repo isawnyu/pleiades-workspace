@@ -75,8 +75,8 @@ class KMLImporter(object):
             for pm_element in k.xpath('//kml:Placemark', namespaces={'kml': kmlns}):
                 f = keytree.feature(pm_element)
                 name = f.properties['name']
-                description = f.properties['description']
-                
+                description = getattr(pm_element.find('*/{%s}Snippet' % kmlns), 'text', 'Imported KML Placemark')
+                text = getattr(pm_element.find('*/{%s}Description' % kmlns), 'text', '')
                 # Process a geo-interface provider into strict GeoJSON
                 # shorthand.
                 where = geojson.GeoJSON.to_instance(dict(
@@ -89,6 +89,8 @@ class KMLImporter(object):
                         'Feature',
                         features.generateId(prefix=''),
                         title=name.encode('utf-8'),
+                        description=description,
+                        text=text
                         )
                 f = features[fid]
                 lid = f.invokeFactory('Location', 'position', title='Position', geometry=geometry)
@@ -118,10 +120,22 @@ class KMLImporter(object):
                                     'text',
                                     'Unnamed Place'
                                     )
+                        pdescription = getattr(
+                                    parent.find('*/{%s}Snippet' % kmlns),                               
+                                    'text', 
+                                    'Imported KML Folder'
+                                    )
+                        ptext = getattr(
+                                    parent.find('*/{%s}Description' % kmlns), 
+                                    'text', 
+                                    ''
+                                    )            
                         pid = places.invokeFactory(
                                     'Place',
                                     places.generateId(prefix=''),
-                                    title=ptitle
+                                    title=ptitle,
+                                    description=pdescription,
+                                    text=ptext
                                     )
                         self.context.attach(places[pid])
                         folders[parentid] = pid

@@ -43,7 +43,7 @@
               <th>Published</th>
               <th>All</th>
             </tr>
-            <tr tal:repeat="tname python:['features', 'places', 'metadata']">
+            <tr tal:repeat="tname python:['features', 'places', 'metadata', 'citations']">
               <tal:row tal:define="row python:view.collections_data()[tname]">
               <th tal:content="python:tname.capitalize()">NAME</th>
               <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published', 'all')]">
@@ -66,7 +66,7 @@
         <ul>
             <li><a href="@@import-kml-form">By posting a KML file</a></li>
             <li><a href="@@import-xml-form">By importing a directory of Pleiades XML files</a></li>
-            <li><a href="@@add-named-form">By creating a single ancient place or feature</a></li>
+            <li><a href="@@add-content-form">By creating a single ancient place, feature, accuracy assessment, or citation</a></li>
         </ul>
         <div metal:use-macro="context/document_relateditems/macros/relatedItems">
             show related items if they exist

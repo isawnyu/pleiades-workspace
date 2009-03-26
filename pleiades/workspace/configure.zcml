@@ -17,22 +17,22 @@
 
   <adapter
     factory=".resource.Resource"
-    for="Products.PleiadesEntity.content.PositionalAccuracy.PositionalAccuracy"
+    for="Products.PleiadesEntity.content.interfaces.IPositionalAccuracy"
     trusted="true"
     />
     
   <adapter
     factory=".resource.Resource"
-    for="Products.PleiadesEntity.content.Feature.Feature"
+    for="Products.PleiadesEntity.content.interfaces.IWork"
     trusted="true"
     />
 
   <adapter
     factory=".resource.Resource"
-    for="Products.PleiadesEntity.content.Place.Place"
+    for="Products.PleiadesEntity.content.interfaces.IReference"
     trusted="true"
     />
-
+    
   <subscriber
     handler=".event.reindexDocSubscriber"
     for=".event.IResourceModifiedEvent"
