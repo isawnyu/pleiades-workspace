@@ -80,3 +80,36 @@ Verify import
     True
     >>> len(list(ws['places'].queryCatalog()))
     1
+    
+Adding a reference citation
+---------------------------
+    
+    >>> browser.open('%s/add-named-form' % ws_url)
+    >>> import os
+    >>> browser.getControl(name='form.widgets.title').value = 'Foo'
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['SecondaryReference']
+    >>> browser.getControl(name='form.buttons.apply').click()
+
+Verify import
+
+    >>> 'foo' in self.references.keys()
+    True
+    >>> 'Foo' in [o.Title for o in ws['citations'].queryCatalog()]
+    True
+    >>> len(list(ws['citations'].queryCatalog()))
+    1    
+    
+    >>> browser.open('%s/add-named-form' % ws_url)
+    >>> import os
+    >>> browser.getControl(name='form.widgets.title').value = 'Bar'
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['PrimaryReference']
+    >>> browser.getControl(name='form.buttons.apply').click()
+
+Verify import
+
+    >>> 'bar' in self.references.keys()
+    True
+    >>> 'Bar' in [o.Title for o in ws['citations'].queryCatalog()]
+    True
+    >>> len(list(ws['citations'].queryCatalog()))
+    2

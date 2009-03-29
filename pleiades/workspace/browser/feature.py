@@ -57,7 +57,10 @@ class NamedFactory(object):
             'PrimaryReference': portal['references'],
             'SecondaryReference': portal['references']
             }
-        oid = containers[portal_type].invokeFactory(portal_type, containers[portal_type].generateId(prefix=''), title=title)
+        if portal_type in ['Place', 'Feature']:
+            oid = containers[portal_type].invokeFactory(portal_type, containers[portal_type].generateId(prefix=''), title=title)
+        else:
+            oid = containers[portal_type].invokeFactory(portal_type, ptool.normalizeString(title), title=title)
         ob = containers[portal_type][oid]
         self.context.attach(ob)
         return (oid, ob.absolute_url())

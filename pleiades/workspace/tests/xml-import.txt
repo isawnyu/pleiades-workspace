@@ -63,6 +63,6 @@ Verify import
     >>> len(list(ws['places'].queryCatalog()))
     317
     >>> len(list(ws['features'].queryCatalog()))
-    317    
-    >>> '...Aloanda' in [o.Title for o in ws['features'].queryCatalog()]
-    True
+    317
+    >>> len(list(ws['citations'].queryCatalog()))
+    669

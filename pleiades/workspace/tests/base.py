@@ -89,13 +89,15 @@ class ContentFunctionalTestCase(ptc.FunctionalTestCase):
         mid = test.portal['features']['metadata'].invokeFactory('PositionalAccuracy', id='cap-map65')
         test.portal['features']['metadata'][mid].setValue(0.01)
         test.portal['features']['metadata'][mid].setText("That's right, 1 cm!")
-            
+        test.portal.invokeFactory(
+            'ReferenceContainer', id='references', title='Features'
+            )            
         test.features = test.portal['features']
         test.places = test.portal['places']
         test.workspaces = test.portal['workspaces']
-
-        # Add feature
-    
+        test.references = test.portal['references']
+        
+        # Add feature    
         fid = test.features.invokeFactory('Feature', '1', title='Ninoe', featureType='settlement')
         f = test.features[fid]
         nameAttested = u'\u039d\u03b9\u03bd\u1f79\u03b7'.encode('utf-8')

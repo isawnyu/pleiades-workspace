@@ -16,6 +16,10 @@ Make a workspace
     >>> from zope.event import notify
     >>> from Products.Archetypes.event import ObjectInitializedEvent
     >>> notify(ObjectInitializedEvent(spaces[wsid]))
+    >>> 'places' in spaces[wsid]
+    True
+    >>> 'features' in spaces[wsid]
+    True
     
 Create some test entities
 

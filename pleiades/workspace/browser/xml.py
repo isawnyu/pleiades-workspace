@@ -64,11 +64,10 @@ class XMLImporter(object):
         log = logging.getLogger("pleiades.entity")
         for xml in glob.glob("%s/*.xml" % sourcedir):
             try:
-                result = load_place(portal, xml, metadataId)
-                self.context.attach(features[result['feature_id']])
-                self.context.attach(places[result['place_id']])
+                result = load_place(portal, xml, metadataId, cb=self.context.attach)
                 count += 1
             except Exception, e:
+                raise
                 log.error("Failed to load %s", xml, exc_info=1)
                 failures.append([basename(xml), str(e)])
         

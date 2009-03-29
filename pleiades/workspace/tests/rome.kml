@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  
+  <Document>
+    <Style id="defaultStyle">
+      <LineStyle>
+        <color>ffff0000</color>
+        <width>2</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>33ff0000</color>
+      </PolyStyle>
+    </Style>
+    <name>Rome, city</name>
+    <visibility>1</visibility>
+    <open>0</open>
+    
+    <Folder>
+      <name>Rome, city</name>
+      <description>Captial of the Roman Republic and Empire</description>
+      <Placemark>
+        <name>Palatine Hill</name>
+        <description>
+        <![CDATA[
+          <div>
+            <p></p>
+            <p>URL: 
+              <a href="http://bacchus.atlantides.org/features/326891255">http://bacchus.atlantides.org/features/326891255</a>
+            </p>
+          </div>
+        ]]>
+        </description>
+        <styleUrl>#defaultStyle</styleUrl>
+        <Point>
+          <coordinates>12.486512,41.891713,0.0</coordinates>
+        </Point>
+        
+        
+      </Placemark>
+      <Placemark>
+        <name>Esquiline Hill</name>
+        <description>
+        <![CDATA[
+          <div>
+            <p></p>
+            <p>URL: 
+              <a href="http://bacchus.atlantides.org/features/264431023">http://bacchus.atlantides.org/features/264431023</a>
+            </p>
+          </div>
+        ]]>
+        </description>
+        <styleUrl>#defaultStyle</styleUrl>
+        <Point>
+          <coordinates>12.497490,41.895090,0.000000</coordinates>
+        </Point>
+        
+        
+      </Placemark>
+      <Placemark>
+        <name>Servian wall</name>
+        <description>
+        <![CDATA[
+          <div>
+            <p></p>
+            <p>URL: 
+              <a href="http://bacchus.atlantides.org/features/774240393">http://bacchus.atlantides.org/features/774240393</a>
+            </p>
+          </div>
+        ]]>
+        </description>
+        <styleUrl>#defaultStyle</styleUrl>
+        
+        
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>12.479396,41.891725,0.000000 12.481777,41.893826,0.000000 12.481137,41.896742,0.000000 12.484508,41.899032,0.000000 12.483692,41.905780,0.000000 12.488483,41.909046,0.000000 12.490733,41.909569,0.000000 12.493619,41.910378,0.000000 12.495239,41.910240,0.000000 12.497407,41.910315,0.000000 12.498317,41.909386,0.000000 12.502381,41.902474,0.000000 12.496030,41.888216,0.000000 12.495836,41.885454,0.000000 12.492606,41.882919,0.000000 12.485689,41.880575,0.000000 12.479525,41.883563,0.000000 12.481496,41.887518,0.000000 12.480853,41.888260,0.000000 12.479396,41.891725,0.000000</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+    </Folder>
+    
+    
+  </Document>
+</kml>

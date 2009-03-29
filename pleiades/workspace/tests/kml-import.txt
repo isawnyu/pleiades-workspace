@@ -55,10 +55,10 @@ Upload folder-less KML
     >>> browser.open('%s/import-kml-form' % ws_url)
     >>> import os
     >>> file_path = '%s/src/pleiades.workspace/pleiades/workspace/tests/archaic.kml' % os.getcwd()
-    >>> file_control = browser.getControl(name='form.widgets.file').mech_control
-    >>> file_control.add_file(open(file_path, 'rb'), filename='archaic.kml')
+    >>> file_control = browser.getControl(name='form.widgets.file')
+    >>> file_control.add_file(open(file_path, 'rb'), 'application/vnd.google-earth.kml+xml', 'archaic.kml')
     >>> browser.getControl(name='form.buttons.apply').click()
-
+    
 Verify import
     
     >>> 'Ptolemais/Barkes Limen' in [o.Title for o in ws['features'].queryCatalog()]
@@ -120,10 +120,10 @@ Upload
     >>> browser.open('%s/import-kml-form' % ws_url)
     >>> import os
     >>> file_path = '%s/src/pleiades.workspace/pleiades/workspace/tests/rome.kml' % os.getcwd()
-    >>> file_control = browser.getControl(name='form.widgets.file').mech_control
-    >>> file_control.add_file(open(file_path, 'rb'), filename='rome.kml')
+    >>> file_control = browser.getControl(name='form.widgets.file')
+    >>> file_control.add_file(open(file_path, 'rb'), 'application/vnd.google-earth.kml+xml', 'rome.kml')
     >>> browser.getControl(name='form.buttons.apply').click()
-
+    
 Verify import
     
     >>> len(ws['features'].queryCatalog())

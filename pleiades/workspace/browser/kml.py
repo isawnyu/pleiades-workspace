@@ -32,11 +32,6 @@ class Form(form.Form):
         importer = KMLImporter(self.context, self.request)
         importer(data['file'])
         response = self.request.response
-        response.setStatus(201)
-        response.setHeader(
-            'Location',
-            '%s' % self.context.absolute_url()
-            )
         response.redirect(self.context.absolute_url())
 
 KMLImportForm = wrap_form(Form)
