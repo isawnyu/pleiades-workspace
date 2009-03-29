@@ -20,9 +20,8 @@ class ManageCollection(BrowserView):
             savepoint = transaction.savepoint()
             try: 
                 wftool.doActionFor(ob, action=transition)
-                for item in ob.values():
-                    import pdb; pdb.set_trace()
-                    wftool.doActionFor(item, action=transition)
+                for item in ob.objectValues():
+                        wftool.doActionFor(item, action=transition)
             except:
                 savepoint.rollback()
                 raise
@@ -64,7 +63,7 @@ class DeleteCollection(BrowserView):
                 portal['features'].manage_delObjects(fids)
                 portal['features']['metadata'].manage_delObjects(mids)
                 portal['places'].manage_delObjects(pids)
-                portal['references'].manage_delObjects(pids)
+                portal['references'].manage_delObjects(rids)
             except:
                 savepoint.rollback()
                 raise
