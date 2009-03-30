@@ -52,7 +52,7 @@ Config the test browser
 Adding a feature
 ----------------
     
-    >>> browser.open('%s/add-named-form' % ws_url)
+    >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Foo'
     >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Feature']
@@ -68,7 +68,7 @@ Verify import
 Adding a place
 --------------
     
-    >>> browser.open('%s/add-named-form' % ws_url)
+    >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Foo'
     >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Place']
@@ -84,7 +84,7 @@ Verify import
 Adding a reference citation
 ---------------------------
     
-    >>> browser.open('%s/add-named-form' % ws_url)
+    >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Foo'
     >>> browser.getControl(name='form.widgets.portal_type:list').value = ['SecondaryReference']
@@ -99,7 +99,7 @@ Verify import
     >>> len(list(ws['citations'].queryCatalog()))
     1    
     
-    >>> browser.open('%s/add-named-form' % ws_url)
+    >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Bar'
     >>> browser.getControl(name='form.widgets.portal_type:list').value = ['PrimaryReference']

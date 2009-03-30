@@ -53,7 +53,7 @@
 
   <browser:page
     for="..interfaces.IWorkspace"
-    name="add-named-form"
+    name="add-content-form"
     class=".feature.AddNamedForm"
     permission="cmf.ModifyPortalContent"
     />

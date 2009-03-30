@@ -28,7 +28,7 @@ class ManageCollection(BrowserView):
             transaction.commit()
             
         new_state = wftool.getInfoFor(members[0], 'review_state')
-
+        
         # acquire the parent workspace
         workspace = None
         child = aq_inner(self.context)
@@ -85,11 +85,9 @@ class ManageCollectionForm(BrowserView):
 
     __call__ = ViewPageTemplateFile('manage_collection_form.pt')
 
-    @memoize
     def collects_state(self):
         return bool([k for k in self.context.keys() if 'review_state' in k])
 
-    @memoize
     def transitions(self):
         wftool = getToolByName(self.context, 'portal_workflow')
         metadata = self.context.queryCatalog()

@@ -1,0 +1,45 @@
+Workspace management
+====================
+
+Config the test browser
+-----------------------
+    
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> portal_url = self.portal.absolute_url()
+    
+    >>> browser.handleErrors = False
+    >>> self.portal.error_log._ignored_exceptions = ()
+    >>> from zope.component import getUtility, getMultiAdapter
+    >>> from plone.portlets.interfaces import IPortletManager
+    >>> from plone.portlets.interfaces import IPortletAssignmentMapping
+    >>> left_column = getUtility(IPortletManager, name=u"plone.leftcolumn")
+    >>> left_assignable = getMultiAdapter((self.portal, left_column), IPortletAssignmentMapping)
+    >>> for name in left_assignable.keys():
+    ...     del left_assignable[name]
+    
+    >>> right_column = getUtility(IPortletManager, name=u"plone.rightcolumn")
+    >>> right_assignable = getMultiAdapter((self.portal, right_column), IPortletAssignmentMapping)
+    >>> for name in right_assignable.keys():
+    ...     del right_assignable[name]
+    
+    >>> from Products.PloneTestCase.setup import portal_owner, default_password
+    >>> browser.open(portal_url + '/login_form?came_from=' + portal_url)
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+
+Test
+----
+
+    >>> self.setRoles(('Manager', 'Contributor'))
+    >>> private_url = self.workspaces['test-ws']['private'].absolute_url()
+    >>> browser.open('%s/@@manage-collection-form' % private_url)
+    >>> browser.getControl(name='transition').value = ['publish']
+    >>> browser.getControl(name='submit').click()
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> wftool = getToolByName(self.portal, 'portal_workflow')
+    >>> wftool.getInfoFor(self.features['1'], 'review_state')
+    'published'
+    

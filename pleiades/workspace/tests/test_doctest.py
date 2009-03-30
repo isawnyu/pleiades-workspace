@@ -31,16 +31,16 @@ def test_suite():
             test_class=base.WorkspaceFunctionalTestCase,
             optionflags=optionflags
             ),
-        # ztc.ZopeDocFileSuite(
-        #             'xml-import.txt',
-        #             package='pleiades.workspace.tests',
-        #             test_class=base.WorkspaceFunctionalTestCase,
-        #             optionflags=optionflags
-        #             ),
+        ztc.ZopeDocFileSuite(
+                    'xml-import.txt',
+                    package='pleiades.workspace.tests',
+                    test_class=base.WorkspaceFunctionalTestCase,
+                    optionflags=optionflags
+                    ),
         ztc.ZopeDocFileSuite(
             'add-feature.txt',
             package='pleiades.workspace.tests',
-            test_class=base.WorkspaceFunctionalTestCase,
+            test_class=base.ContentFunctionalTestCase,
             optionflags=optionflags
             ),
         ztc.ZopeDocFileSuite(

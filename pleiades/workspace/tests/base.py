@@ -6,6 +6,8 @@ from Testing import ZopeTestCase as ztc
 from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
 
+from pleiades.workspace.content.workspace import initTypeTopic, initStateTopic
+
 ztc.installProduct('ATVocabularyManager')
 ztc.installProduct('Products.ATBackRef')
 ztc.installProduct('Products.CompoundField')
@@ -60,7 +62,7 @@ class WorkspaceFunctionalTestCase(ptc.FunctionalTestCase):
 class ContentFunctionalTestCase(ptc.FunctionalTestCase):
 
     def afterSetUp(test):
-        test.setRoles(('Manager',))
+        test.setRoles(('Manager', 'Contributor'))
         pt = test.portal.portal_types
         for type in [
             'Topic', 
@@ -119,3 +121,19 @@ class ContentFunctionalTestCase(ptc.FunctionalTestCase):
         
         f.reindexObject()
         p.reindexObject()
+
+        # Add a workspace
+        wsid = test.workspaces.invokeFactory('Workspace', 'test-ws', title='Test Workspace')
+        ob = test.workspaces[wsid]
+        # from zope.event import notify
+        # from Products.Archetypes.event import ObjectInitializedEvent
+        # notify(ObjectInitializedEvent(ob))
+        wsuid = ob.UID()
+        for s in ['private', 'pending', 'published']:
+            sid = ob.invokeFactory(
+                    'Workspace Collection', id=s, title=s.capitalize()
+                    )
+            topic = ob[sid]
+            initStateTopic(topic, s, wsuid)
+        ob.attach(f)
+        ob.attach(p)
