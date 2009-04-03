@@ -159,3 +159,5 @@ def add_workspace_collections(ob, event):
                     )
             subtopic = topic[tid]
             initTypeTopic(subtopic, tname, wsuid, True)
+    
+    ob.plone_utils.addPortalMessage(_(u'Adding citations is a good way to begin.'))

@@ -7,24 +7,32 @@ from plone.app.z3cform.layout import wrap_form
 
 from pleiades.workspace.interfaces import IResource
 
+TYPES = {
+    'Feature': 'Feature',
+    'Ancient Place': 'Place',
+    'Positional Accuracy Assessment': 'PositionalAccuracyAssessment',
+    'Primary Source Citation': 'PrimaryReference',
+    'Secondary Source Citation': 'SecondaryReference',
+}
 
 class IAddNamed(Interface):
     """Feature or Place adding interface
     """
     title = schema.TextLine(title=u"Title", description=u"Enter a title for the feature or place. It may be subsequently changed.", required=True)
-    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Feature', 'Place', 'PositionalAccuracy', 'PrimaryReference', 'SecondaryReference'], default='Feature')
+    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Feature', 'Ancient Place', 'Positional Accuracy Assessment', 'Primary Source Citation', 'Secondary Source Citation'], default='Feature')
 
 
 class Form(form.Form):
     fields = field.Fields(IAddNamed)
     ignoreContext = True # don't use context to get widget data
-    label = u"Add an ancient place or feature to this workspace"
+    label = u"Add content to be attached to this workspace. Consider adding citations first so other content can link to them."
     
     @button.buttonAndHandler(u'Apply')
     def handleApply(self, action):
         data, errors = self.extractData()
+        ptname = TYPES[data['portal_type']]
         factory = NamedFactory(self.context, self.request)
-        oid, to_url = factory(data['title'], data['portal_type'])
+        oid, to_url = factory(data['title'], ptname)
         response = self.request.response
         response.setStatus(201)
         response.setHeader(
@@ -46,7 +54,7 @@ class NamedFactory(object):
         self.context = context
         self.request = request
     
-    def __call__(self, title, portal_type):        
+    def __call__(self, title, portal_type):
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
         ptool = getToolByName(self.context, 'plone_utils')
         wtool = getToolByName(self.context, 'portal_workflow')

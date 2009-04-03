@@ -71,7 +71,7 @@ Adding a place
     >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Foo'
-    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Place']
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Ancient Place']
     >>> browser.getControl(name='form.buttons.apply').click()
 
 Verify import
@@ -87,7 +87,7 @@ Adding a reference citation
     >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Foo'
-    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['SecondaryReference']
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Secondary Source Citation']
     >>> browser.getControl(name='form.buttons.apply').click()
 
 Verify import
@@ -102,7 +102,7 @@ Verify import
     >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Bar'
-    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['PrimaryReference']
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Primary Source Citation']
     >>> browser.getControl(name='form.buttons.apply').click()
 
 Verify import
