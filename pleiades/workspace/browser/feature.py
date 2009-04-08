@@ -8,9 +8,9 @@ from plone.app.z3cform.layout import wrap_form
 from pleiades.workspace.interfaces import IResource
 
 TYPES = {
-    'Feature': 'Feature',
+    'Ancient Feature': 'Feature',
     'Ancient Place': 'Place',
-    'Positional Accuracy Assessment': 'PositionalAccuracyAssessment',
+    'Positional Accuracy Assessment': 'PositionalAccuracy',
     'Primary Source Citation': 'PrimaryReference',
     'Secondary Source Citation': 'SecondaryReference',
 }
@@ -19,7 +19,7 @@ class IAddNamed(Interface):
     """Feature or Place adding interface
     """
     title = schema.TextLine(title=u"Title", description=u"Enter a title for the feature or place. It may be subsequently changed.", required=True)
-    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Feature', 'Ancient Place', 'Positional Accuracy Assessment', 'Primary Source Citation', 'Secondary Source Citation'], default='Feature')
+    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Ancient Feature', 'Ancient Place', 'Positional Accuracy Assessment', 'Primary Source Citation', 'Secondary Source Citation'], default='Primary Source Citation')
 
 
 class Form(form.Form):
