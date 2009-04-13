@@ -26,12 +26,6 @@
     for="Products.PleiadesEntity.content.interfaces.IWork"
     trusted="true"
     />
-
-  <adapter
-    factory=".resource.Resource"
-    for="Products.PleiadesEntity.content.interfaces.IReference"
-    trusted="true"
-    />
     
   <subscriber
     handler=".event.reindexDocSubscriber"

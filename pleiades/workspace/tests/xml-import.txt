@@ -64,5 +64,4 @@ Verify import
     317
     >>> len(list(ws['features'].queryCatalog()))
     317
-    >>> len(list(ws['citations'].queryCatalog()))
-    669
+    

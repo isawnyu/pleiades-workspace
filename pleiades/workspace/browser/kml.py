@@ -116,15 +116,15 @@ class KMLImporter(object):
                                     'Unnamed Place'
                                     )
                         pdescription = getattr(
-                                    parent.find('*/{%s}Snippet' % kmlns),                               
-                                    'text', 
+                                    parent.find('*/{%s}Snippet' % kmlns),
+                                    'text',
                                     'Imported KML Folder'
                                     )
                         ptext = getattr(
-                                    parent.find('*/{%s}Description' % kmlns), 
-                                    'text', 
+                                    parent.find('*/{%s}Description' % kmlns),
+                                    'text',
                                     ''
-                                    )            
+                                    )
                         pid = places.invokeFactory(
                                     'Place',
                                     places.generateId(prefix=''),
@@ -140,11 +140,3 @@ class KMLImporter(object):
             raise
         
         transaction.commit()
-
-
-
-
-# class KMLImportForm(BrowserView):
-#
-#     __call__ = ViewPageTemplateFile('import_kml_form.pt')
-# 

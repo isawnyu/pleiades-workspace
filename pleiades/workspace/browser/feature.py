@@ -11,15 +11,13 @@ TYPES = {
     'Ancient Feature': 'Feature',
     'Ancient Place': 'Place',
     'Positional Accuracy Assessment': 'PositionalAccuracy',
-    'Primary Source Citation': 'PrimaryReference',
-    'Secondary Source Citation': 'SecondaryReference',
 }
 
 class IAddNamed(Interface):
     """Feature or Place adding interface
     """
     title = schema.TextLine(title=u"Title", description=u"Enter a title for the feature or place. It may be subsequently changed.", required=True)
-    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Ancient Feature', 'Ancient Place', 'Positional Accuracy Assessment', 'Primary Source Citation', 'Secondary Source Citation'], default='Primary Source Citation')
+    portal_type = schema.Choice(title=u"Portal type", description=u"Select portal content type.", required=True, values=['Ancient Feature', 'Ancient Place', 'Positional Accuracy Assessment'], default='Positional Accuracy Assessment')
 
 
 class Form(form.Form):
@@ -62,8 +60,6 @@ class NamedFactory(object):
             'Place': portal['places'],
             'Feature': portal['features'],
             'PositionalAccuracy': portal['features']['metadata'],
-            'PrimaryReference': portal['references'],
-            'SecondaryReference': portal['references']
             }
         if portal_type in ['Place', 'Feature']:
             oid = containers[portal_type].invokeFactory(portal_type, containers[portal_type].generateId(prefix=''), title=title)

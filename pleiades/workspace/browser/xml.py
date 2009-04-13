@@ -78,9 +78,3 @@ class XMLImporter(object):
             for f in failures:
                 msg += "%s\n" % str(f)
             return msg
-
-
-# class XMLImportForm(BrowserView):
-#
-#     __call__ = ViewPageTemplateFile('import_xml_form.pt')
-# 
