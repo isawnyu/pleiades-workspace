@@ -4,7 +4,7 @@ KML File upload and import
 Setup workspace
 ---------------
     
-    >>> self.setRoles(('Manager', 'Contributor'))
+    >>> self.setRoles(('Contributor',))
     >>> folder = self.folder
     >>> from Products.CMFCore.utils import getToolByName
     >>> types = getToolByName(self.portal, 'portal_types')
@@ -43,9 +43,10 @@ Config the test browser
     >>> for name in right_assignable.keys():
     ...     del right_assignable[name]
     
-    >>> from Products.PloneTestCase.setup import portal_owner, default_password
+    >>> from Products.PloneTestCase.setup import default_user, default_password
+    >>> self.setRoles(('Contributor',), name=default_user)
     >>> browser.open(portal_url + '/login_form?came_from=' + portal_url)
-    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_name').value = default_user
     >>> browser.getControl(name='__ac_password').value = default_password
     >>> browser.getControl(name='submit').click()
 
