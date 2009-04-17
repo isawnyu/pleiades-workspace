@@ -23,7 +23,7 @@ class IAddNamed(Interface):
 class Form(form.Form):
     fields = field.Fields(IAddNamed)
     ignoreContext = True # don't use context to get widget data
-    label = u"Add content to be attached to this workspace. Consider adding citations first so other content can link to them."
+    label = u"Add content to be attached to this workspace."
     
     @button.buttonAndHandler(u'Apply')
     def handleApply(self, action):
