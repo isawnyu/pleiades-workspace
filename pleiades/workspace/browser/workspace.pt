@@ -47,15 +47,14 @@
               <tal:row tal:define="row python:view.collections_data()[tname]">
               <th tal:content="python:tname.capitalize()">NAME</th>
               <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published', 'all')]">
-                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>,&nbsp;<a tal:attributes="href string:${data/url}/kml">[KML]</a>,&nbsp;<a tal:attributes="href string:${data/url}/atom">[Atom]</a>
+                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>
               </td>
               </tal:row>
             </tr>
             <tr tal:define="row python:view.collections_data()['all']">
               <th>All</th>
               <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published')]">
-                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;
-                <a tal:attributes="href string:${data/url}/@@kml-document">[KML]</a>
+                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>
               </td>
             </tr>
           </table>
