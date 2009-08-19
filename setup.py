@@ -28,7 +28,8 @@ setup(name='pleiades.workspace',
           'setuptools',
           'keytree',
           'geojson',
-          'plone.app.z3cform'
+          'plone.app.z3cform',
+          'z3c.form',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

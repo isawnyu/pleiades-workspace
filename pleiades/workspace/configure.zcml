@@ -5,11 +5,11 @@
   i18n_domain="pleiades.workspace"
   >
 
-  <five:registerPackage package="." initialize=".initialize" />
-
   <include package=".browser" />
   <include package=".content" />
   <include package=".portlets" />
+
+  <five:registerPackage package="." initialize=".initialize" />
 
   <class class="Products.Archetypes.BaseBTreeFolder.BaseBTreeFolder">
     <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />

@@ -20,6 +20,7 @@ def setup_pleiades_workspace():
     import pleiades.workspace
     zcml.load_config('configure.zcml', pleiades.workspace)
     fiveconfigure.debug_mode = False
+    ztc.installPackage('pleiades.vocabularies')
     ztc.installPackage('pleiades.workspace')
 
 setup_pleiades_workspace()
