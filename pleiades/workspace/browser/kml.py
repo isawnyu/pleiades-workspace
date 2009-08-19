@@ -28,7 +28,6 @@ class Form(form.Form):
     
     @button.buttonAndHandler(u'Apply')
     def handleApply(self, action):
-        data, errors = self.extractData()
         upload_file = self.widgets['file'].value
         importer = KMLImporter(self.context, self.request)
         importer(upload_file.read())

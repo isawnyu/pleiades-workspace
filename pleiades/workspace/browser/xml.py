@@ -30,10 +30,8 @@ class Form(form.Form):
     
     @button.buttonAndHandler(u'Apply')
     def handleApply(self, action):
-        data, errors = self.extractData()
-        import pdb; pdb.set_trace()
         importer = XMLImporter(self.context, self.request)
-        msg = importer(data['directory'], data.get('metadataId'))
+        msg = importer(self.widgets['directory'].value, self.widgets['metadataId'].value or None)
         response = self.request.response
         response.setStatus(201)
         response.setHeader(
