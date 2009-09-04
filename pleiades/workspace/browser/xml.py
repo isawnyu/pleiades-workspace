@@ -63,7 +63,7 @@ class XMLImporter(object):
         log = logging.getLogger("pleiades.entity")
         for xml in glob.glob("%s/*.xml" % sourcedir):
             try:
-                result = load_place(portal, xml, metadataId, cb=self.context.attach)
+                result = load_place(portal, xml, with_features=False, metadataId=metadataId, cb=self.context.attach)
                 count += 1
             except Exception, e:
                 raise

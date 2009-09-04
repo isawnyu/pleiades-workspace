@@ -64,7 +64,7 @@
         <p>New data can be created in this workspace's context in several ways:</p>
         <ul>
             <li><a href="@@import-kml-form">By posting a KML file</a></li>
-            <li><a href="@@import-xml-form">By importing a directory of Pleiades XML files</a></li>
+            <li><a href="@@import-cap-form">By importing a CAP directory XML file</a></li>
             <li><a href="@@add-content-form">By creating a single ancient place, feature, accuracy assessment, or citation</a></li>
         </ul>
         <div metal:use-macro="context/document_relateditems/macros/relatedItems">

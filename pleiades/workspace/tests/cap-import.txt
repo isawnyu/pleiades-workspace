@@ -52,16 +52,14 @@ Config the test browser
 Upload
 ------
 
-    >>> browser.open('%s/import-xml-form' % ws_url)
+    >>> browser.open('%s/import-cap-form' % ws_url)
     >>> import os
-    >>> path = '/tmp/batlas-65-points'
-    >>> browser.getControl(name='form.widgets.directory').value = path
+    >>> path = '/tmp/map35-fixed.xml'
+    >>> browser.getControl(name='form.widgets.path').value = path
     >>> browser.getControl(name='form.buttons.apply').click()
 
 Verify import
 
     >>> len(list(ws['places'].queryCatalog()))
-    317
-    >>> len(list(ws['features'].queryCatalog()))
-    0
+    351
     

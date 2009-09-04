@@ -53,6 +53,13 @@
 
   <browser:page
     for="..interfaces.IWorkspace"
+    name="import-cap-form"
+    class=".cap.CAPImportForm"
+    permission="cmf.ModifyPortalContent"
+    />
+    
+  <browser:page
+    for="..interfaces.IWorkspace"
     name="add-content-form"
     class=".feature.AddNamedForm"
     permission="cmf.ModifyPortalContent"
