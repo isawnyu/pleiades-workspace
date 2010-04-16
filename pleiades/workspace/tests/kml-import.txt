@@ -63,14 +63,20 @@ with a single location.
     
 Verify import. No Features should be created anymore, only Places.
     
-    >>> 'Ptolemais/Barkes Limen' in [o.Title for o in ws['features'].queryCatalog()]
-    False
     >>> len(list(ws['features'].queryCatalog()))
     0
-    >>> 'Ptolemais/Barkes Limen' in [o.Title for o in ws['places'].queryCatalog()]
-    True
     >>> len(list(ws['places'].queryCatalog()))
     11
+    >>> p, = [b.getObject() for b in ws['places'].queryCatalog() if b.Title == 'Aspendos/Primoupolis']
+    >>> p.Title()
+    'Aspendos/Primoupolis'
+    >>> len(p.getLocations())
+    1
+    >>> loc = p.getLocations()[0]
+    >>> loc.Title()
+    'Position'
+    >>> loc.getText()
+    ''
 
 Test attachment of KML to a metadata doc
     

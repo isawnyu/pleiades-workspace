@@ -84,7 +84,7 @@ class KMLImporter(object):
                         kmlplaces[parent] = []
                     kmlplaces[parent].append(pm_element)
                 else:
-                    kmlplaces[pm_element] = [] 
+                    kmlplaces[pm_element] = [pm_element] 
 
             # Marshal them into Pleiades content objects
             for i, (place, locations) in enumerate(kmlplaces.items()):
@@ -121,13 +121,21 @@ class KMLImporter(object):
                 for j, location in enumerate(locations):
 
                     f = keytree.feature(location)
-                    name = f.properties['name']
-                    description = getattr(
-                        location.find('{%s}Snippet' % kmlns), 
-                        'text', 'Imported KML Placemark')
-                    text = getattr(pm_element.find('{%s}description' % kmlns),
-                        'text', '')
-                    title = name or 'Unnamed Location'
+                    
+                    if location is not place:
+                        name = f.properties['name']
+                        description = getattr(
+                            location.find('{%s}Snippet' % kmlns), 
+                            'text', 'Imported KML Placemark')
+                        text = getattr(
+                            pm_element.find('{%s}description' % kmlns),
+                            'text', '')
+                        title = name or 'Unnamed Location'
+                    else:
+                        name = title = 'Position'
+                        description = 'Nominal position of the ancient place'
+                        text = ''
+                   
                     # TODO: parse out temporal information
 
                     # Process a geo-interface provider into strict GeoJSON
@@ -143,6 +151,7 @@ class KMLImporter(object):
                                             or "location-%s" % (f.id or j)), 
                             title=title, description=description,
                             text=text, geometry=geometry)
+                    
                     places[pid][lid].setTitle(title)
                     places[pid][lid].setDescription(description)
                     places[pid][lid].setText(text)
