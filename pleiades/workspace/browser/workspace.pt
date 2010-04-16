@@ -33,8 +33,9 @@
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
+        <h2>Dashboard</h2>
+        <p>Current status of content is shown in a grid of collections below. Click on any number to browse to that collection, or the pound (#) symbol to browse to its management form.</p>
         <div class="ws-dashboard">
-          <p>Current status of data by type is shown in the table below. Count of items in each collection is shown in a link. Alternate representations of the data collections appear in square brackets.</p>
           <table class="ws-dashboard">
             <tr>
               <th>Type/Status</th>
@@ -43,29 +44,29 @@
               <th>Published</th>
               <th>All</th>
             </tr>
-            <tr tal:repeat="tname python:['features', 'places', 'metadata']">
+            <tr tal:repeat="tname python:['places', 'metadata']">
               <tal:row tal:define="row python:view.collections_data()[tname]">
               <th tal:content="python:tname.capitalize()">NAME</th>
               <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published', 'all')]">
-                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>
+                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;<a tal:attributes="href string:${data/url}/@@manage-collection-form"><span>#</span></a>
               </td>
               </tal:row>
             </tr>
             <tr tal:define="row python:view.collections_data()['all']">
               <th>All</th>
               <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published')]">
-                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>
+                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;<a tal:attributes="href string:${data/url}/@@manage-collection-form"><span>#</span></a>
               </td>
             </tr>
           </table>
         </div>
 
-        <h3>Importing Data</h3>
+        <h2>Importing Data</h2>
         <p>New data can be created in this workspace's context in several ways:</p>
         <ul>
             <li><a href="@@import-kml-form">By posting a KML file</a></li>
-            <li><a href="@@import-cap-form">By importing a CAP directory XML file</a></li>
-            <li><a href="@@add-content-form">By creating a single ancient place, feature, accuracy assessment, or citation</a></li>
+            <li><a href="@@add-content-form">By creating a single ancient place or accuracy assessment</a></li>
+            <li><a href="@@import-cap-form">(For admins) by importing a CAP directory XML file</a></li>
         </ul>
         <div metal:use-macro="context/document_relateditems/macros/relatedItems">
             show related items if they exist

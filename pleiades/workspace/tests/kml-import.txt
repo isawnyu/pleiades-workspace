@@ -17,8 +17,6 @@ Setup workspace
     >>> notify(ObjectInitializedEvent(ws))
     >>> 'places' in ws.objectIds()
     True
-    >>> 'features' in ws.objectIds()
-    True
     >>> ws_url = ws.absolute_url()
 
 Config the test browser
@@ -52,7 +50,10 @@ Config the test browser
 
 Upload folder-less KML
 ----------------------
-    
+
+KML document with "bare" placemarks is interpreted as multiple places, each
+with a single location.
+
     >>> browser.open('%s/import-kml-form' % ws_url)
     >>> import os
     >>> file_path = '%s/src/pleiades.workspace/pleiades/workspace/tests/archaic.kml' % os.getcwd()
@@ -60,11 +61,15 @@ Upload folder-less KML
     >>> file_control.add_file(open(file_path, 'rb'), 'application/vnd.google-earth.kml+xml', 'archaic.kml')
     >>> browser.getControl(name='form.buttons.apply').click()
     
-Verify import
+Verify import. No Features should be created anymore, only Places.
     
     >>> 'Ptolemais/Barkes Limen' in [o.Title for o in ws['features'].queryCatalog()]
-    True
+    False
     >>> len(list(ws['features'].queryCatalog()))
+    0
+    >>> 'Ptolemais/Barkes Limen' in [o.Title for o in ws['places'].queryCatalog()]
+    True
+    >>> len(list(ws['places'].queryCatalog()))
     11
 
 Test attachment of KML to a metadata doc
@@ -81,14 +86,6 @@ Test attachment of KML to a metadata doc
 
 Test Deletion
     
-    >>> browser.open('%s/features/@@manage-collection-form' % ws_url)
-    >>> deletion = browser.getControl(name='deletion')
-    >>> deletion.value = ['true']
-    >>> browser.getControl(name='submit-delete').click()
-    >>> len(list(ws['features'].queryCatalog()))
-    0
-    >>> len(list(self.portal['features'].keys()))
-    1
     >>> browser.open('%s/places/@@manage-collection-form' % ws_url)
     >>> deletion = browser.getControl(name='deletion')
     >>> deletion.value = ['true']
@@ -108,7 +105,9 @@ Test Deletion
 
 Upload foldered KML
 -------------------
-    
+
+A folder of placemarks becomes a place with one or more locations
+
     >>> wsid = folder.invokeFactory('Workspace', id='test-ws2', title='Testing')
     >>> ws = folder[wsid]
     >>> from zope.event import notify
@@ -127,17 +126,16 @@ Upload
     
 Verify import
     
-    >>> len(ws['features'].queryCatalog())
-    3
     >>> len(ws['places'].queryCatalog())
     1
     >>> len(ws['metadata'].queryCatalog())
     1
     >>> p = ws['places'].queryCatalog()[0].getObject()
-    >>> p.title
-    u'Rome, city'
-    >>> f = ws['features'].queryCatalog()[0].getObject()
-    >>> f.getPlaces() == [p]
-    True
-    >>> f in list(p.getFeatures())
-    True
+    >>> print p.Title()
+    Rome, city
+    >>> print p.Description()
+    Rome, city: 1 of 1 imported places
+    >>> print p.getText()
+    <p>Captial of the Roman Republic and Empire</p>
+    >>> len(p.getLocations())
+    3

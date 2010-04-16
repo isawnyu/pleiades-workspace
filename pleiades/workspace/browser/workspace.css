@@ -4,7 +4,10 @@ div.ws-dashboard {
   }
 
 table.ws-dashboard {
-  text-align: left;
+  text-align: right;
   border-spacing: 1em;
   }
 
+table.ws-dashboard th {
+  width: 10em;
+  }

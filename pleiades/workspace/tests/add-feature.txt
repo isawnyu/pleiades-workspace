@@ -49,34 +49,52 @@ Config the test browser
     >>> browser.getControl(name='__ac_password').value = default_password
     >>> browser.getControl(name='submit').click()
 
-Adding a feature
-----------------
-    
-    >>> browser.open('%s/add-content-form' % ws_url)
-    >>> import os
-    >>> browser.getControl(name='form.widgets.title').value = 'Foo'
-    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Ancient Feature']
-    >>> browser.getControl(name='form.buttons.apply').click()
-
-Verify import
-    
-    >>> 'Foo' in [o.Title for o in ws['features'].queryCatalog()]
-    True
-    >>> len(list(ws['features'].queryCatalog()))
-    1
-
 Adding a place
 --------------
     
     >>> browser.open('%s/add-content-form' % ws_url)
     >>> import os
     >>> browser.getControl(name='form.widgets.title').value = 'Foo'
-    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Ancient Place']
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Positional Accuracy Assessment']
     >>> browser.getControl(name='form.buttons.apply').click()
 
 Verify import
     
-    >>> 'Foo' in [o.Title for o in ws['places'].queryCatalog()]
+    >>> 'Foo' in [o.Title for o in ws['features']['metadata'].queryCatalog()]
     True
-    >>> len(list(ws['places'].queryCatalog()))
+    >>> len(list(ws['features']['metadata'].queryCatalog()))
     1
+
+Adding metadata
+---------------
+
+    >>> browser.open('%s/add-content-form' % ws_url)
+    >>> import os
+    >>> browser.getControl(name='form.widgets.title').value = 'Foo'
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Positional Accuracy Assessment']
+    >>> browser.getControl(name='form.buttons.apply').click()
+
+Verify creation
+    
+    >>> 'Foo' in [o.Title for o in ws['features']['metadata'].queryCatalog()]
+    True
+    >>> len(list(ws['features']['metadata'].queryCatalog()))
+    1
+
+Check when trying an existing id
+
+    >>> browser.open('%s/add-content-form' % ws_url)
+    >>> import os
+    >>> browser.getControl(name='form.widgets.title').value = 'Foo'
+    >>> browser.getControl(name='form.widgets.portal_type:list').value = ['Positional Accuracy Assessment']
+    >>> browser.getControl(name='form.buttons.apply').click()
+    >>> 'Id already exists' in browser.contents
+    True
+
+Verify non-creation
+    
+    >>> 'Foo' in [o.Title for o in ws['features']['metadata'].queryCatalog()]
+    True
+    >>> len(list(ws['features']['metadata'].queryCatalog()))
+    1
+

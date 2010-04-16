@@ -55,6 +55,12 @@ def test_suite():
             test_class=base.WorkspaceFunctionalTestCase,
             optionflags=optionflags
             ),
+        ztc.ZopeDocFileSuite(
+            'cap-import-77.txt',
+            package='pleiades.workspace.tests',
+            test_class=base.WorkspaceFunctionalTestCase,
+            optionflags=optionflags
+            ),
         ])
 
 if __name__ == '__main__':
