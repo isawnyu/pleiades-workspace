@@ -57,7 +57,14 @@
     class=".cap.CAPImportForm"
     permission="cmf.ModifyPortalContent"
     />
-    
+
+  <browser:page
+    for="..interfaces.IWorkspace"
+    name="import-road-form"
+    class=".road.RoadImportForm"
+    permission="cmf.ModifyPortalContent"
+    />
+
   <browser:page
     for="..interfaces.IWorkspace"
     name="add-content-form"

@@ -98,4 +98,9 @@
     >
     <permission value="Modify portal content"/>
   </action>
+  <action title="Criteria" action_id="criteria" category="object" condition_expr=""
+    url_expr="string:${folder_url}/criterion_edit_form" visible="True"
+    >
+    <permission value="Modify portal content"/>
+  </action>
 </object>
