@@ -109,6 +109,9 @@ class ContentFunctionalTestCase(ptc.FunctionalTestCase):
         
         pid = test.places.invokeFactory('Place', '1', title='Ninoe')
         p = test.places[pid]
+
+        lid = p.invokeFactory('Location', 'location', title='Point 1', geometry='Point:[-86.4808333333333, 34.769722222222]')
+
         nid = p.invokeFactory('Name', 'ninoe', nameAttested=nameAttested, nameLanguage='grc', nameType='geographic', accuracy='accurate', completeness='complete')
         attestations = p[nid].Schema()['attestations']
         attestations.resize(1)

@@ -70,7 +70,7 @@ class RoadImporter(object):
                                     places.generateId(prefix=''),
                                     title=prime['label'],
                                     placeType=['road'],
-                                    description='An ancient place, cited: BAtlas %s %s' % (key, prime['label']),
+                                    description='An ancient place, cited: BAtlas %s %s' % (' '.join(key.split()[:2]), prime['label']),
                                     text=u'',
                                     creators=doc['compiler'],
                                     contributors='R. Talbert, T. Elliott, S. Gillies',
@@ -106,7 +106,7 @@ class RoadImporter(object):
                         import pdb; pdb.set_trace()
                         raise
                     loc = places[pid][lid]
-                    m, g = key.split()
+                    m, g, name = key.split()
                     loc.setLocation(
                         'http://atlantides.org/capgrids/%s/%s' % (m, g))
                     loc.setDescription(
