@@ -67,6 +67,13 @@
 
   <browser:page
     for="..interfaces.IWorkspace"
+    name="import-csv-form"
+    class=".table.CSVImportForm"
+    permission="cmf.ModifyPortalContent"
+    />
+
+  <browser:page
+    for="..interfaces.IWorkspace"
     name="add-content-form"
     class=".feature.AddNamedForm"
     permission="cmf.ModifyPortalContent"
