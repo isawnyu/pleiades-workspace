@@ -1,8 +1,11 @@
 import logging
+
+from Acquisition import aq_parent
+from persistent.dict import PersistentDict
 from zope.interface import implements
 from zope.annotation.interfaces import IAnnotations
 from zope.component.interfaces import ComponentLookupError
-from persistent.dict import PersistentDict
+
 from pleiades.workspace.interfaces import IResource
 
 logger = logging.getLogger('pleiades.workspace.resource')
@@ -35,7 +38,7 @@ class Resource(object):
 def pleiades_wsuids_value(object, portal, **kwargs):
     try:
         resource = IResource(object)
-        return list(resource.wsuids)
+        return list(IResource(object).wsuids) or list(IResource(aq_parent(object)).wsuids)
     except (ComponentLookupError, TypeError, ValueError, KeyError, IndexError):
  	# The catalog expects AttributeErrors when a value can't be found
         raise AttributeError
