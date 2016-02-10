@@ -26,7 +26,11 @@
     for="Products.PleiadesEntity.content.interfaces.IWork"
     trusted="true"
     />
-    
+  
+  <adapter
+    name="pleiades_wsuids"
+    factory=".resource.pleiades_wsuids_value" />
+
   <subscriber
     handler=".event.reindexDocSubscriber"
     for=".event.IResourceModifiedEvent"
