@@ -38,7 +38,7 @@
 
   <class class=".resource.Resource">
     <require
-      permission="zope.View"
+      permission="zope2.View"
       interface=".interfaces.IResource"
       />
   </class>

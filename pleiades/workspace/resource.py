@@ -35,9 +35,9 @@ class Resource(object):
 
 
 @indexer(Interface)
-def pleiades_wsuids_value(object, portal, **kwargs):
+def pleiades_wsuids_value(obj):
     try:
-        return list(IResource(object).wsuids) or list(IResource(aq_parent(object)).wsuids)
+        return list(IResource(obj).wsuids) or list(IResource(aq_parent(obj)).wsuids)
     except (ComponentLookupError, TypeError, ValueError, KeyError, IndexError):
         # The catalog expects AttributeErrors when a value can't be found
         raise AttributeError
