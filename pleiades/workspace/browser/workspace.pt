@@ -15,70 +15,47 @@
   </style>
 </metal:css>
 
-<metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main"
-           tal:define="text context/text;">
+<metal:main fill-slot="content-core">
 
-        <div tal:replace="structure provider:plone.abovecontenttitle" />
+    <h2>Dashboard</h2>
+    <p>Current status of content is shown in a grid of collections below. Click on any number to browse to that collection, or the pound (#) symbol to browse to its management form.</p>
+    <div class="ws-dashboard">
+      <table class="ws-dashboard">
+        <tr>
+          <th>Type/Status</th>
+          <th>Drafting</th>
+          <th>Pending</th>
+          <th>Published</th>
+          <th>All</th>
+        </tr>
+        <tr tal:repeat="tname python:['places', 'metadata']">
+          <tal:row tal:define="row python:view.collections_data()[tname]">
+          <th tal:content="python:tname.capitalize()">NAME</th>
+          <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published', 'all')]">
+            <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;<a tal:attributes="href string:${data/url}/@@manage-collection-form"><span>#</span></a>
+          </td>
+          </tal:row>
+        </tr>
+        <tr tal:define="row python:view.collections_data()['all']">
+          <th>All</th>
+          <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published')]">
+            <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;<a tal:attributes="href string:${data/url}/@@manage-collection-form"><span>#</span></a>
+          </td>
+        </tr>
+      </table>
+    </div>
 
-        <h1 class="documentFirstHeading">
-            <span metal:use-macro="python:context.widget('title', mode='view')" />
-        </h1>
-
-        <div tal:replace="structure provider:plone.belowcontenttitle" />
-
-        <div class="documentDescription">
-            <span metal:use-macro="python:context.widget('description', mode='view')" />
-        </div>
-
-        <div tal:replace="structure provider:plone.abovecontentbody" />
-
-        <h2>Dashboard</h2>
-        <p>Current status of content is shown in a grid of collections below. Click on any number to browse to that collection, or the pound (#) symbol to browse to its management form.</p>
-        <div class="ws-dashboard">
-          <table class="ws-dashboard">
-            <tr>
-              <th>Type/Status</th>
-              <th>Drafting</th>
-              <th>Pending</th>
-              <th>Published</th>
-              <th>All</th>
-            </tr>
-            <tr tal:repeat="tname python:['places', 'metadata']">
-              <tal:row tal:define="row python:view.collections_data()[tname]">
-              <th tal:content="python:tname.capitalize()">NAME</th>
-              <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published', 'all')]">
-                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;<a tal:attributes="href string:${data/url}/@@manage-collection-form"><span>#</span></a>
-              </td>
-              </tal:row>
-            </tr>
-            <tr tal:define="row python:view.collections_data()['all']">
-              <th>All</th>
-              <td tal:repeat="data python:[row[state] for state in ('drafting', 'pending', 'published')]">
-                <a tal:attributes="href data/url"><span tal:replace="data/count">COUNT</span></a>&nbsp;<a tal:attributes="href string:${data/url}/@@manage-collection-form"><span>#</span></a>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <h2>Importing Data</h2>
-        <p>New data can be created in this workspace's context in several ways:</p>
-        <ul>
-            <li><a href="@@import-kml-form">By posting a KML file</a></li>
-            <li><a href="@@add-content-form">By creating a single ancient place or accuracy assessment</a></li>
-            <li><a href="@@import-cap-form">(For admins) by importing a CAP directory XML file</a></li>
-            <li><a href="@@import-csv-form">(For admins) by importing a CSV file</a></li>
-            <li><a href="@@import-road-form">(For admins) by importing a roads JSON file</a></li>
-        </ul>
-        <div metal:use-macro="context/document_relateditems/macros/relatedItems">
-            show related items if they exist
-        </div>
+    <h2>Importing Data</h2>
+    <p>New data can be created in this workspace's context in several ways:</p>
+    <ul>
+        <li><a href="@@import-kml-form">By posting a KML file</a></li>
+        <li><a href="@@add-content-form">By creating a single ancient place or accuracy assessment</a></li>
+        <li><a href="@@import-cap-form">(For admins) by importing a CAP directory XML file</a></li>
+        <li><a href="@@import-csv-form">(For admins) by importing a CSV file</a></li>
+        <li><a href="@@import-road-form">(For admins) by importing a roads JSON file</a></li>
+    </ul>
     
-        <div tal:replace="structure provider:plone.belowcontentbody" />
-
-    </tal:main-macro>
 </metal:main>
 
 </body>
 </html>
-

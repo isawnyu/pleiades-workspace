@@ -54,7 +54,7 @@ Upload
 
     >>> browser.open('%s/import-cap-form' % ws_url)
     >>> import os
-    >>> path = '%s/src/pleiades.workspace/pleiades/workspace/tests/map77.xml' % os.getcwd()
+    >>> path = os.path.join(self.path, 'map77.xml')
     >>> browser.getControl(name='form.widgets.path').value = path
     >>> browser.getControl(name='form.buttons.apply').click()
 

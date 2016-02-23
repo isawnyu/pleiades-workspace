@@ -56,7 +56,7 @@ with a single location.
 
     >>> browser.open('%s/import-kml-form' % ws_url)
     >>> import os
-    >>> file_path = '%s/src/pleiades.workspace/pleiades/workspace/tests/archaic.kml' % os.getcwd()
+    >>> file_path = os.path.join(self.path, 'archaic.kml')
     >>> file_control = browser.getControl(name='form.widgets.file')
     >>> file_control.add_file(open(file_path, 'rb'), 'application/vnd.google-earth.kml+xml', 'archaic.kml')
     >>> browser.getControl(name='form.buttons.apply').click()
@@ -125,7 +125,7 @@ Upload
     
     >>> browser.open('%s/import-kml-form' % ws_url)
     >>> import os
-    >>> file_path = '%s/src/pleiades.workspace/pleiades/workspace/tests/rome.kml' % os.getcwd()
+    >>> file_path = os.path.join(self.path, 'rome.kml')
     >>> file_control = browser.getControl(name='form.widgets.file')
     >>> file_control.add_file(open(file_path, 'rb'), 'application/vnd.google-earth.kml+xml', 'rome.kml')
     >>> browser.getControl(name='form.buttons.apply').click()
