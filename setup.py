@@ -30,6 +30,7 @@ setup(name='pleiades.workspace',
           'geojson',
           'plone.app.z3cform',
           'z3c.form',
+          'zope.app.container',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
