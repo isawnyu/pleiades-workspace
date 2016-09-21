@@ -13,6 +13,9 @@
       acquire="False"
       >
         <role name="Contributor"/>
+        <role name="Manager"/>
+        <role name="Owner"/>
+        <role name="Site Administrator"/>
     </permission>
 
   </permissions>
